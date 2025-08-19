@@ -1,0 +1,4 @@
+Name: Nano
+Beschreibung: Einfacher Texteditor
+Befehl: nano
+Argumente: <Datei>

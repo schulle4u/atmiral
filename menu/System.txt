@@ -1,0 +1,21 @@
+Name: Top
+Beschreibung: Systemmonitor
+Befehl: top
+
+Name: Uptime
+Beschreibung: Zeigt Systemlaufzeit
+Befehl: uptime
+
+Name: Updates
+Beschreibung: Nach Updates suchen
+Befehl: sudo apt update && sudo apt upgrade
+
+Name: Sprachausgabe
+Beschreibung: Eingegebenen Text sprechen
+Befehl: espeak-ng
+Argumente: -v de -a 100 -s 300 "<Text>"
+
+Name: Dienststeuerung
+Beschreibung: Dienststeuerung
+Befehl: sudo systemctl
+Argumente: <Aktion> <Dienst>
