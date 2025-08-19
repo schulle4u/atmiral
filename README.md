@@ -24,7 +24,7 @@ When called, WhipLaunch searches for menu files in the directory `$HOME/.config/
 * Command: The actual command that is called  from the menu entry.
 * Arguments: Any type of fixed or dynamic command options. The text between `<` and `>` is recognized as a template and the menu prompts for user input when the command is called.
 
-**Note**: The field names above can be translated into any language. If WhipLaunch is being used in a language other than English, the field names must also be specified in that language, provided they have been translated in the relevant language file.
+**Note**: The field names above can be translated into any language. If WhipLaunch is being used in a language other than English, the field names must also be specified in that language, provided they have been translated in the relevant language file. To use the launcher in another language, you can call it using e.g. `WHIPLAUNCHLANG=de ./whiplaunch.sh`
 
 ## Example
 
