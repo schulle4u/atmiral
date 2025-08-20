@@ -2,8 +2,8 @@
 # WhipLaunch english language file
 
 # Error messages
-MSG_ERROR_WHIPTAIL_MISSING="Error: whiptail is not installed."
-MSG_ERROR_WHIPTAIL_INSTALL="Install using e.g.: sudo apt install whiptail"
+MSG_ERROR_DIALOG_MISSING="Error: dialog is not installed."
+MSG_ERROR_DIALOG_INSTALL="Install using e.g.: sudo apt install dialog"
 MSG_ERROR_MENUDIR_NOT_EXISTS="Error: Menu directory '%s' doesn't exist."
 MSG_ERROR_MAIN_MENU_FAILED="Error while executing main menu."
 
@@ -13,7 +13,7 @@ MSG_WARNING_FILE_NOT_READABLE="Warning: File '%s' not readable."
 MSG_WARNING_UNKNOWN_FORMAT="Warning: Unknown format on line %d: '%s'"
 MSG_WARNING_NO_VALID_ENTRIES="Warning: No valid entries found in '%s'."
 
-# Whiptail UI
+# Dialog UI
 UI_TITLE="WhipLaunch"
 UI_MENU_PROMPT="Please select:"
 UI_BACK_OPTION="..."

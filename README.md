@@ -1,5 +1,5 @@
 # WhipLaunch
-Linux program launcher using whiptail
+Linux program launcher using dialog
 
 ## Description
 
@@ -35,9 +35,10 @@ Name: Top
 Description: System monitor
 Command: top
 
+# Here we use dialog to print system uptime as a nice message box
 Name: Uptime
 Description: Display system uptime
-Command: uptime
+Command: dialog --no-lines --title "uptime" --msgbox "$(uptime)" 10 70
 
 Name: Updates
 Description: Search for updates

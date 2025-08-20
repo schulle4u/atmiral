@@ -1,5 +1,5 @@
 # WhipLaunch
-Linux-Programmstarter auf Whiptail-Basis
+Linux-Programmstarter auf Dialog-Basis
 
 ## Beschreibung
 
@@ -35,9 +35,10 @@ Name: Top
 Beschreibung: Systemmonitor
 Befehl: top
 
+# Hier nutzen wir Dialog, um die Systemlaufzeit in einer Hinweisbox anzuzeigen
 Name: Uptime
 Beschreibung: Zeigt Systemlaufzeit
-Befehl: uptime
+Befehl: dialog --no-lines --title "uptime" --msgbox "$(uptime)" 10 70
 
 Name: Updates
 Beschreibung: Nach Updates suchen

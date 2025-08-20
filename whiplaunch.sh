@@ -1,5 +1,5 @@
 #!/bin/bash
-# WhipLaunch - Linux program launcher using whiptail
+# WhipLaunch - Linux program launcher using dialog
 # Copyright (c) 2025 Steffen Schultz, released under the terms of the MIT license
 
 set -euo pipefail
@@ -52,8 +52,8 @@ fi
 # Dependency Check
 check_dependencies() {
     if ! command -v dialog >/dev/null 2>&1; then
-        printf "%s\n" "$MSG_ERROR_WHIPTAIL_MISSING" >&2
-        printf "%s\n" "$MSG_ERROR_WHIPTAIL_INSTALL" >&2
+        printf "%s\n" "$MSG_ERROR_DIALOG_MISSING" >&2
+        printf "%s\n" "$MSG_ERROR_DIALOG_INSTALL" >&2
         exit 1
     fi
 }
