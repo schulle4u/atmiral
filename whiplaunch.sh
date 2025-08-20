@@ -50,7 +50,7 @@ fi
 
 # Dependency Check
 check_dependencies() {
-    if ! command -v whiptail >/dev/null 2>&1; then
+    if ! command -v dialog >/dev/null 2>&1; then
         printf "%s\n" "$MSG_ERROR_WHIPTAIL_MISSING" >&2
         printf "%s\n" "$MSG_ERROR_WHIPTAIL_INSTALL" >&2
         exit 1
@@ -65,27 +65,6 @@ elif [[ -d "$HOME/.config/whiplaunch/menu/" ]]; then
 else
     MENUDIR="$SCRIPT_DIR/menu/"
 fi
-
-
-# Modify newt colors for a darkmode feeling
-export NEWT_COLORS='
-root=,black
-window=lightgray,black
-border=lightgray,black
-title=green,black
-textbox=white,black
-acttextbox=black,yellow
-entry=white,black
-label=white,black
-button=black,cyan
-actbutton=black,yellow
-listbox=white,black
-actlistbox=black,yellow
-checkbox=white,black
-actcheckbox=black,yellow
-helpline=black,lightgray
-roottext=white,black
-'
 
 # Validate if directory exists
 if [[ ! -d "$MENUDIR" ]]; then
@@ -191,9 +170,10 @@ execute_command() {
                 local user_input
                 
                 # Prompt user for input
-                if user_input=$(whiptail --inputbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
+                if user_input=$(dialog --no-lines --inputbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
                     processed_args="${processed_args//<$placeholder>/$user_input}"
                 else
+                    clear
                     printf "%s\n" "$MSG_CANCELLED"
                     printf "%s" "$MSG_PRESS_ENTER"
                     read -r
@@ -208,7 +188,7 @@ execute_command() {
     else
         full_command="$cmd"
     fi
-    
+    clear
     printf "$MSG_STARTING_COMMAND\n" "$full_command"
     printf "%s\n" "$MSG_SEPARATOR"
     
@@ -232,12 +212,14 @@ run_textmenu() {
     local menufile="$1"
     
     if ! parse_menufile "$menufile"; then
-        whiptail --ok-button "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_LOADING_FILE" "$menufile")" 10 70
+        dialog --no-lines --ok-label "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_LOADING_FILE" "$menufile")" 10 70
+        clear
         return 1
     fi
     
     if [[ ${#PARSED[@]} -eq 0 ]]; then
-        whiptail --ok-button "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES" "$menufile")" 10 70
+        dialog --no-lines --ok-label "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES" "$menufile")" 10 70
+        clear
         return 1
     fi
 
@@ -261,8 +243,8 @@ run_textmenu() {
 
         clear
         local choice
-        choice=$(whiptail --topleft --title "$UI_TITLE" \
-            --ok-button "$UI_OK_BUTTON" --cancel-button "$UI_CANCEL_BUTTON" \
+        choice=$(dialog --visit-items --no-lines --begin 1 1 --title "$UI_TITLE" \
+            --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
             --menu "$UI_MENU_PROMPT" "$box_height" 70 "$menu_height" \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
@@ -323,7 +305,8 @@ run_menu() {
 
         clear
         if [[ ${#display_entries[@]} -eq 0 ]]; then
-            whiptail --ok-button "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES_DIR" "$current_dir")" 10 70
+            dialog --no-lines --ok-label "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES_DIR" "$current_dir")" 10 70
+            clear
             return 0
         fi
 
@@ -337,8 +320,8 @@ run_menu() {
         box_height=$(echo "$dimensions" | cut -d' ' -f2)
 
         local choice
-        choice=$(whiptail --topleft --title "$UI_TITLE" \
-            --ok-button "$UI_OK_BUTTON" --cancel-button "$UI_CANCEL_BUTTON" \
+        choice=$(dialog --visit-items --no-lines --begin 1 1 --title "$UI_TITLE" \
+            --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
             --menu "$UI_MENU_PROMPT" "$box_height" 70 "$menu_height" \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \

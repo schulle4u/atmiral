@@ -4,7 +4,7 @@ Befehl: top
 
 Name: Uptime
 Beschreibung: Zeigt Systemlaufzeit
-Befehl: uptime
+Befehl: dialog --no-lines --title "uptime" --msgbox "$(uptime)" 10 70
 
 Name: Updates
 Beschreibung: Nach Updates suchen
