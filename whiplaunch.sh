@@ -9,6 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Default configuration values
 WHIPLAUNCH_LANG="de"
 MAX_MENU_HEIGHT=12
+COMMAND_DEBUG=0
 
 
 # Load config file
@@ -189,8 +190,10 @@ execute_command() {
         full_command="$cmd"
     fi
     clear
-    printf "$MSG_STARTING_COMMAND\n" "$full_command"
-    printf "%s\n" "$MSG_SEPARATOR"
+    if [[ "$COMMAND_DEBUG" == "1" ]]; then
+        printf "$MSG_STARTING_COMMAND\n" "$full_command"
+        printf "%s\n" "$MSG_SEPARATOR"
+    fi
     
     # Use bash -c instead of eval for better safety
     if bash -c "$full_command"; then
