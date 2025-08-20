@@ -6,8 +6,35 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Default configuration values
+WHIPLAUNCH_LANG="de"
+MAX_MENU_HEIGHT=12
+
+
+# Load config file
+CONFIG_FILE=""
+if [ -e "/etc/whiplaunch.conf" ]; then
+    CONFIG_FILE="/etc/whiplaunch.conf"
+elif [ -e "$SCRIPT_DIR/whiplaunch.conf" ]; then
+    CONFIG_FILE="$SCRIPT_DIR/whiplaunch.conf"
+fi
+
+if [ -n "$CONFIG_FILE" ]; then
+    # Check if config file is readable
+    if [ -r "$CONFIG_FILE" ]; then
+        if grep -q -vE '^\s*(#|$|[a-zA-Z_][a-zA-Z0-9_]*=)' "$CONFIG_FILE"; then
+            echo "Error: Config file '$CONFIG_FILE' contains invalid lines." >&2
+            exit 1
+        fi
+        source "$CONFIG_FILE"
+    else
+        echo "Error: Cannot read config file '$CONFIG_FILE'." >&2
+        exit 1
+    fi
+fi
+
 # Load language file
-LANG_FILE="${SCRIPT_DIR}/lang/${WHIPLAUNCHLANG:-de}.sh"
+LANG_FILE="${SCRIPT_DIR}/lang/${WHIPLAUNCH_LANG}.sh"
 if [[ -f "$LANG_FILE" ]]; then
     source "$LANG_FILE"
 else
@@ -39,8 +66,6 @@ else
     MENUDIR="$SCRIPT_DIR/menu/"
 fi
 
-# Maximum menu height
-MAX_MENU_HEIGHT=12
 
 # Modify newt colors for a darkmode feeling
 export NEWT_COLORS='

@@ -24,7 +24,7 @@ WhipLaunch sucht beim Aufruf im Verzeichnis `$HOME/.config/whiplaunch/menu` oder
 * Befehl: Der eigentliche Befehl, welcher beim Bestätigen des Menüeintrags aufgerufen wird. 
 * Argumente: jede Art von festen oder dynamischen Befehlsoptionen. Der Text zwischen `<` und `>` wird als Vorlage erkannt und im Menü beim Aufrufen abgefragt. 
 
-**Hinweis**: Die oben genannten Feldnamen sind für jede Sprache übersetzbar. Wird WhipLaunch in einer anderen Sprache als deutch verwendet, müssen auch die Feldnamen in dieser Sprache angegeben werden, sofern sie in der Sprachdatei übersetzt wurden. Um den Launcher in einer anderen Sprache zu verwenden, erfolgt der Aufruf beispielsweise mittels `WHIPLAUNCHLANG=en ./whiplaunch.sh`
+**Hinweis**: Die oben genannten Feldnamen sind für jede Sprache übersetzbar. Wird WhipLaunch in einer anderen Sprache als deutch verwendet, müssen auch die Feldnamen in dieser Sprache angegeben werden, sofern sie in der Sprachdatei übersetzt wurden. 
 
 ## Beispiel
 
