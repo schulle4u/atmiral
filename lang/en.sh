@@ -20,6 +20,8 @@ UI_BACK_OPTION="..."
 UI_BACK_DESCRIPTION="Parent level"
 UI_FOLDER_PREFIX="Folder: "
 UI_PROGRAMS_PREFIX="Programs from "
+UI_OK_BUTTON="OK"
+UI_CANCEL_BUTTON="Cancel"
 
 # Error dialogs
 UI_ERROR_LOADING_FILE="Error loading file:\n%s"

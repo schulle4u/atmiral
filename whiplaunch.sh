@@ -232,12 +232,12 @@ run_textmenu() {
     local menufile="$1"
     
     if ! parse_menufile "$menufile"; then
-        whiptail --msgbox "$(printf "$UI_ERROR_LOADING_FILE" "$menufile")" 10 70
+        whiptail --ok-button "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_LOADING_FILE" "$menufile")" 10 70
         return 1
     fi
     
     if [[ ${#PARSED[@]} -eq 0 ]]; then
-        whiptail --msgbox "$(printf "$UI_ERROR_NO_ENTRIES" "$menufile")" 10 70
+        whiptail --ok-button "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES" "$menufile")" 10 70
         return 1
     fi
 
@@ -262,6 +262,7 @@ run_textmenu() {
         clear
         local choice
         choice=$(whiptail --topleft --title "$UI_TITLE" \
+            --ok-button "$UI_OK_BUTTON" --cancel-button "$UI_CANCEL_BUTTON" \
             --menu "$UI_MENU_PROMPT" "$box_height" 70 "$menu_height" \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
@@ -322,7 +323,7 @@ run_menu() {
 
         clear
         if [[ ${#display_entries[@]} -eq 0 ]]; then
-            whiptail --msgbox "$(printf "$UI_ERROR_NO_ENTRIES_DIR" "$current_dir")" 10 70
+            whiptail --ok-button "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES_DIR" "$current_dir")" 10 70
             return 0
         fi
 
@@ -337,6 +338,7 @@ run_menu() {
 
         local choice
         choice=$(whiptail --topleft --title "$UI_TITLE" \
+            --ok-button "$UI_OK_BUTTON" --cancel-button "$UI_CANCEL_BUTTON" \
             --menu "$UI_MENU_PROMPT" "$box_height" 70 "$menu_height" \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \

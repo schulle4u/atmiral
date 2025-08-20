@@ -20,6 +20,8 @@ UI_BACK_OPTION="..."
 UI_BACK_DESCRIPTION="Eine Ebene höher"
 UI_FOLDER_PREFIX="Ordner: "
 UI_PROGRAMS_PREFIX="Programme aus "
+UI_OK_BUTTON="OK"
+UI_CANCEL_BUTTON="Abbrechen"
 
 # Error dialogs
 UI_ERROR_LOADING_FILE="Fehler beim Laden der Datei:\n%s"
