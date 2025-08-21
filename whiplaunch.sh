@@ -11,7 +11,6 @@ WHIPLAUNCH_LANG="de"
 MAX_MENU_HEIGHT=12
 COMMAND_DEBUG=0
 
-
 # Load config file
 CONFIG_FILE=""
 if [ -e "/etc/whiplaunch.conf" ]; then

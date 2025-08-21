@@ -26,6 +26,8 @@ When called, WhipLaunch searches for menu files in the directory `$HOME/.config/
 
 **Note**: The field names above can be translated into any language. If WhipLaunch is being used in a language other than English, the field names must also be specified in that language, provided they have been translated in the relevant language file. 
 
+If you prefer the menu to have a dark colour scheme, you will find a sample `.dialogrc` file in this folder which you can copy into your home directory. It contains the colours for dark mode and also sets the `visit_items` option to `ON` to enable better keyboard operation. However, this option is already set in the script when the menu is defined.
+
 ## Example
 
 Here is a menu file with some system commands.

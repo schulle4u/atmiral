@@ -26,6 +26,8 @@ WhipLaunch sucht beim Aufruf im Verzeichnis `$HOME/.config/whiplaunch/menu` oder
 
 **Hinweis**: Die oben genannten Feldnamen sind für jede Sprache übersetzbar. Wird WhipLaunch in einer anderen Sprache als deutch verwendet, müssen auch die Feldnamen in dieser Sprache angegeben werden, sofern sie in der Sprachdatei übersetzt wurden. 
 
+Wer für das Menü eine dunkle Farbgebung bevorzugt, findet im Ordner eine `.dialogrc` Beispieldatei, welche in das Home-Verzeichnis kopiert werden kann. Sie enthält Darkmode-Farben und setzt auch die Option `visit_items` auf `ON`, um eine bessere Tastaturbedienung zu ermöglichen. Letztere Option wird jedoch bereits im Script beim Definieren des Menüs festgelegt. 
+
 ## Beispiel
 
 Hier ist eine Menüdatei mit verschiedenen Systembefehlen.
