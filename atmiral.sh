@@ -108,6 +108,8 @@ check_dependencies() {
     fi
 }
 
+check_dependencies
+
 # Looking for menu list files
 if [[ -n "${1:-}" && -d "$1" ]]; then
     MENUDIR="$1"
@@ -382,7 +384,6 @@ run_menu() {
 
 # Main execution
 main() {
-    check_dependencies
     
     if ! run_menu "$MENUDIR"; then
         printf "%s\n" "$MSG_ERROR_MAIN_MENU_FAILED" >&2
