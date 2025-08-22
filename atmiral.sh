@@ -1,5 +1,5 @@
 #!/bin/bash
-# ATMIRAL - Accessible text-based menu interface for running applications on Linux)
+# ATMIRAL - Accessible text-based menu interface for running applications on Linux
 # Copyright (c) 2025 Steffen Schultz, released under the terms of the MIT license
 
 set -euo pipefail

@@ -3,7 +3,7 @@ Barrierefreies textbasiertes Menü zum Starten von Programmen unter Linux
 
 ## Beschreibung
 
-ATMIRAL (Abkürzung für Accessible text-based menu interface for running applications on Linux) ist ein benutzerfreundliches Startmenü für die Linux-Shell zum schnellen Aufrufen häufig verwendeter Programme und Befehle. Über eine Ordnerstruktur mit menschenlesbaren Textdateien kann das Menü individuell zusammengestellt werden und ist somit an jedes Linux-System anpassbar. Es eignet sich sowohl für Anfänger, um ihnen die Scheu vor Befehlseingaben zu nehmen, als auch für Menschen, die für bestimmte Abläufe bewusst eine eingeschränkte Arbeitsumgebung bevorzugen. Es soll dabei weder die Befehlseingabe noch eine komplette grafische Oberfläche auf Shellebene ersetzen.
+ATMIRAL (Abkürzung für "Accessible text-based menu interface for running applications on Linux") ist ein benutzerfreundliches Startmenü für die Linux-Shell zum schnellen Aufrufen häufig verwendeter Programme und Befehle. Über eine Ordnerstruktur mit menschenlesbaren Textdateien kann das Menü individuell zusammengestellt werden und ist somit an jedes Linux-System anpassbar. Es eignet sich sowohl für Anfänger, um ihnen die Scheu vor Befehlseingaben zu nehmen, als auch für Menschen, die für bestimmte Abläufe bewusst eine eingeschränkte Arbeitsumgebung bevorzugen. Es soll dabei weder die Befehlseingabe noch eine komplette grafische Oberfläche auf Shellebene ersetzen.
 
 ## Installation
 
