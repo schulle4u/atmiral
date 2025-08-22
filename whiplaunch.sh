@@ -8,7 +8,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Default configuration values
 WHIPLAUNCH_LANG="de"
-MAX_MENU_HEIGHT=12
 COMMAND_DEBUG=0
 
 # Load config file
@@ -123,15 +122,6 @@ if [[ ! -d "$MENUDIR" ]]; then
     printf "$MSG_ERROR_MENUDIR_NOT_EXISTS\n" "$MENUDIR" >&2
     exit 1
 fi
-
-# Calculate menu dimensions helper function
-calculate_menu_dimensions() {
-    local total_entries="$1"
-    local menu_height=$((total_entries < 5 ? 5 : total_entries))
-    menu_height=$((menu_height > MAX_MENU_HEIGHT ? MAX_MENU_HEIGHT : menu_height))
-    local box_height=$((menu_height + 10))
-    echo "$menu_height $box_height"
-}
 
 # Parse text format menu files
 parse_menufile() {
@@ -286,20 +276,11 @@ run_textmenu() {
             display_entries+=("${PARSED[$i]}" "${PARSED[$((i+1))]}")
         done
 
-        # Calculate menu dimensions
-        local total_entries=$((${#display_entries[@]} / 2))
-        local dimensions
-        dimensions=$(calculate_menu_dimensions "$total_entries")
-        local menu_height
-        local box_height
-        menu_height=$(echo "$dimensions" | cut -d' ' -f1)
-        box_height=$(echo "$dimensions" | cut -d' ' -f2)
-
         clear
         local choice
         choice=$(dialog --visit-items --no-lines --begin 1 1 --title "$UI_TITLE" \
             --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
-            --menu "$UI_MENU_PROMPT" "$box_height" 70 "$menu_height" \
+            --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
             3>&1 1>&2 2>&3)
@@ -364,19 +345,10 @@ run_menu() {
             return 0
         fi
 
-        # Calculate menu dimensions
-        local total_entries=$((${#display_entries[@]} / 2))
-        local dimensions
-        dimensions=$(calculate_menu_dimensions "$total_entries")
-        local menu_height
-        local box_height
-        menu_height=$(echo "$dimensions" | cut -d' ' -f1)
-        box_height=$(echo "$dimensions" | cut -d' ' -f2)
-
         local choice
         choice=$(dialog --visit-items --no-lines --begin 1 1 --title "$UI_TITLE" \
             --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
-            --menu "$UI_MENU_PROMPT" "$box_height" 70 "$menu_height" \
+            --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
             3>&1 1>&2 2>&3)
