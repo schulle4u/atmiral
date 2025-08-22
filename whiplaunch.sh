@@ -26,7 +26,10 @@ if [ -n "$CONFIG_FILE" ]; then
             echo "Error: Config file '$CONFIG_FILE' contains invalid lines." >&2
             exit 1
         fi
-        source "$CONFIG_FILE"
+        if ! (set -e; source "$CONFIG_FILE") 2>/dev/null; then
+            echo "Error: Invalid config file '$CONFIG_FILE'." >&2
+            exit 1
+        fi
     else
         echo "Error: Cannot read config file '$CONFIG_FILE'." >&2
         exit 1
@@ -34,16 +37,65 @@ if [ -n "$CONFIG_FILE" ]; then
 fi
 
 # Load language file
+load_language_file() {
+    local lang_file="$1"
+    
+    if [[ ! -f "$lang_file" ]]; then
+        return 1
+    fi
+    
+    if [[ ! -r "$lang_file" ]]; then
+        echo "Error: Cannot read language file '$lang_file'." >&2
+        return 1
+    fi
+    
+    # Load the language file safely
+    if ! (set -e; source "$lang_file" >/dev/null 2>&1); then
+        echo "Error: Invalid syntax in language file '$lang_file'." >&2
+        return 1
+    fi
+
+    source "$lang_file"
+
+    # Validate critical variables are set
+    local required_vars=(
+        "MSG_ERROR_DIALOG_MISSING"
+        "UI_TITLE"
+        "UI_MENU_PROMPT"
+        "UI_OK_BUTTON"
+        "UI_CANCEL_BUTTON"
+        "UI_BACK_OPTION"
+        "UI_BACK_DESCRIPTION"
+        "MSG_PRESS_ENTER"
+        "FIELD_NAME_PATTERN"
+        "FIELD_DESC_PATTERN"
+        "FIELD_CMD_PATTERN"
+        "FIELD_ARGS_PATTERN"
+    )
+    
+    local missing_vars=()
+    for var in "${required_vars[@]}"; do
+        if [[ -z "${!var:-}" ]]; then
+            missing_vars+=("$var")
+        fi
+    done
+    
+    if [[ ${#missing_vars[@]} -gt 0 ]]; then
+        echo "Error: Language file '$lang_file' is missing required variables:" >&2
+        printf "  %s\n" "${missing_vars[@]}" >&2
+        return 1
+    fi
+    
+    return 0
+}
+
+# Load language file
 LANG_FILE="${SCRIPT_DIR}/lang/${WHIPLAUNCH_LANG}.sh"
-if [[ -f "$LANG_FILE" ]]; then
-    source "$LANG_FILE"
-else
+if ! load_language_file "$LANG_FILE"; then
     # Fallback to english
     LANG_FILE="${SCRIPT_DIR}/lang/en.sh"
-    if [[ -f "$LANG_FILE" ]]; then
-        source "$LANG_FILE"
-    else
-        echo "Error: No language file found." >&2
+    if ! load_language_file "$LANG_FILE"; then
+        echo "Error: No valid language file found." >&2
         exit 1
     fi
 fi
