@@ -1,30 +1,30 @@
-# WhipLaunch
-Linux program launcher using dialog
+# ATMIRAL
+Accessible text-based menu interface for running applications on Linux
 
 ## Description
 
-WhipLaunch is a user-friendly start menu for the Linux shell, allowing you to quickly access frequently used programs and commands. The menu can be customised using a folder structure with human-readable text files, making it adaptable to any Linux system. It is ideal for beginners, helping them to overcome their fear of entering commands, and for those who prefer to restrict certain processes to a specific working environment. However, it is not intended to replace command input or a complete graphical user interface.
+ATMIRAL is a user-friendly start menu for the Linux shell, allowing you to quickly access frequently used programs and commands. The menu can be customised using a folder structure with human-readable text files, making it adaptable to any Linux system. It is ideal for beginners, helping them to overcome their fear of entering commands, and for those who prefer to restrict certain processes to a specific working environment. However, it is not intended to replace command input or a complete graphical user interface.
 
 ## Installation
 
-Clone the repository and make `whiplaunch.sh` executable. 
+Clone the repository and make `atmiral.sh` executable. 
 
 ```
-chmod +x ./whiplaunch.sh
+chmod +x ./atmiral.sh
 ```
 
 TODO: Create installation script.
 
 ## Usage
 
-When called, WhipLaunch searches for menu files in the directory `$HOME/.config/whiplaunch/menu` or in its own directory. There are some sample folders and files in the repository that should be found immediately. A menu file consists of configuration sections separated by a blank line. Each configuration section can contain the following fields: 
+When called, ATMIRAL searches for menu files in the directory `$HOME/.config/atmiral/menu` or in its own directory. There are some sample folders and files in the repository that should be found immediately. A menu file consists of configuration sections separated by a blank line. Each configuration section can contain the following fields: 
 
 * Name: Display name of the program or command (not the actual command)
 * Description: Short description, displayed to the right.
 * Command: The actual command that is called  from the menu entry.
 * Arguments: Any type of fixed or dynamic command options. The text between `<` and `>` is recognized as a template and the menu prompts for user input when the command is called.
 
-**Note**: The field names above can be translated into any language. If WhipLaunch is being used in a language other than English, the field names must also be specified in that language, provided they have been translated in the relevant language file. 
+**Note**: The field names above can be translated into any language. If ATMIRAL is being used in a language other than English, the field names must also be specified in that language, provided they have been translated in the relevant language file. 
 
 If you prefer the menu to have a dark colour scheme, you will find a sample `.dialogrc` file in this folder which you can copy into your home directory. It contains the colours for dark mode and also sets the `visit_items` option to `ON` to enable better keyboard operation. However, this option is already set in the script when the menu is defined.
 

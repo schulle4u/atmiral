@@ -1,5 +1,5 @@
 #!/bin/bash
-# WhipLaunch german language file
+# ATMIRAL german language file
 
 # Error messages
 MSG_ERROR_DIALOG_MISSING="Fehler: dialog ist nicht installiert."
@@ -14,7 +14,7 @@ MSG_WARNING_UNKNOWN_FORMAT="Warnung: Unbekanntes Format in Zeile %d: '%s'"
 MSG_WARNING_NO_VALID_ENTRIES="Warnung: Keine gültigen Einträge in '%s' gefunden."
 
 # Dialog UI
-UI_TITLE="WhipLaunch"
+UI_TITLE="ATMIRAL"
 UI_MENU_PROMPT="Bitte wählen:"
 UI_BACK_OPTION="..."
 UI_BACK_DESCRIPTION="Eine Ebene höher"
@@ -38,7 +38,7 @@ MSG_COMMAND_SUCCESS="Befehl erfolgreich ausgeführt."
 MSG_COMMAND_ERROR="Fehler bei der Ausführung des Befehls (Exit-Code: %d)."
 MSG_PRESS_ENTER="Drücke Enter um zurückzukehren..."
 MSG_CANCELLED="Abgebrochen."
-MSG_EXIT="WhipLaunch beendet."
+MSG_EXIT="ATMIRAL beendet."
 
 # Regex pattern for field names (case-insensitive)
 FIELD_NAME_PATTERN="^[Nn]ame:[[:space:]]*"

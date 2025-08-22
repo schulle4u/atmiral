@@ -1,5 +1,5 @@
 #!/bin/bash
-# WhipLaunch - Linux program launcher using dialog
+# ATMIRAL - Accessible text-based menu interface for running applications on Linux)
 # Copyright (c) 2025 Steffen Schultz, released under the terms of the MIT license
 
 set -euo pipefail
@@ -7,15 +7,15 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Default configuration values
-WHIPLAUNCH_LANG="de"
+ATMIRAL_LANG="de"
 COMMAND_DEBUG=0
 
 # Load config file
 CONFIG_FILE=""
-if [ -e "/etc/whiplaunch.conf" ]; then
-    CONFIG_FILE="/etc/whiplaunch.conf"
-elif [ -e "$SCRIPT_DIR/whiplaunch.conf" ]; then
-    CONFIG_FILE="$SCRIPT_DIR/whiplaunch.conf"
+if [ -e "/etc/atmiral.conf" ]; then
+    CONFIG_FILE="/etc/atmiral.conf"
+elif [ -e "$SCRIPT_DIR/atmiral.conf" ]; then
+    CONFIG_FILE="$SCRIPT_DIR/atmiral.conf"
 fi
 
 if [ -n "$CONFIG_FILE" ]; then
@@ -89,7 +89,7 @@ load_language_file() {
 }
 
 # Load language file
-LANG_FILE="${SCRIPT_DIR}/lang/${WHIPLAUNCH_LANG}.sh"
+LANG_FILE="${SCRIPT_DIR}/lang/${ATMIRAL_LANG}.sh"
 if ! load_language_file "$LANG_FILE"; then
     # Fallback to english
     LANG_FILE="${SCRIPT_DIR}/lang/en.sh"
@@ -111,8 +111,8 @@ check_dependencies() {
 # Looking for menu list files
 if [[ -n "${1:-}" && -d "$1" ]]; then
     MENUDIR="$1"
-elif [[ -d "$HOME/.config/whiplaunch/menu/" ]]; then
-    MENUDIR="$HOME/.config/whiplaunch/menu/"
+elif [[ -d "$HOME/.config/atmiral/menu/" ]]; then
+    MENUDIR="$HOME/.config/atmiral/menu/"
 else
     MENUDIR="$SCRIPT_DIR/menu/"
 fi
