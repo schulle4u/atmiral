@@ -280,7 +280,7 @@ run_textmenu() {
 
         clear
         local choice
-        choice=$(dialog --visit-items --no-lines --begin 1 1 --title "$UI_TITLE" \
+        choice=$(dialog --visit-items --no-lines --begin 1 1 --backtitle "$UI_TITLE - $base" \
             --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
@@ -348,7 +348,7 @@ run_menu() {
         fi
 
         local choice
-        choice=$(dialog --visit-items --no-lines --begin 1 1 --title "$UI_TITLE" \
+        choice=$(dialog --visit-items --no-lines --begin 1 1 --backtitle "$UI_TITLE" \
             --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
