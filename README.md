@@ -22,9 +22,15 @@ When called, ATMIRAL searches for menu files in the directory `$HOME/.config/atm
 * Name: Display name of the program or command (not the actual command)
 * Description: Short description, displayed to the right.
 * Command: The actual command that is called  from the menu entry.
-* Arguments: Any type of fixed or dynamic command options. The text between `<` and `>` is recognized as a template and the menu prompts for user input when the command is called.
+* Arguments: Any type of fixed or dynamic command options. The text between `<` and `>` is recognized as a placeholder and the menu prompts for user input when the command is called.
 
-**Note**: The field names above can be translated into any language. If ATMIRAL is being used in a language other than English, the field names must also be specified in that language, provided they have been translated in the relevant language file. 
+The following placeholders are available to open special dialog boxes: 
+
+* `<File>`: Opens a file selection dialog.
+* `<Directory>`: Opens a directory selection.
+* `<Password>`: Input box for passwords.
+
+**Note**: The field names and placeholders above can be translated into any language. If ATMIRAL is being used in a language other than English, the field names and placeholders must also be specified in that language, provided they have been translated in the relevant language file. 
 
 If you prefer the menu to have a dark colour scheme, you will find a sample `.dialogrc` file in this folder which you can copy into your home directory. It contains the colours for dark mode and also sets the `visit_items` option to `ON` to enable better keyboard operation. However, this option is already set in the script when the menu is defined.
 

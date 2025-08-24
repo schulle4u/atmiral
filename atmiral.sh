@@ -70,6 +70,9 @@ load_language_file() {
         "FIELD_DESC_PATTERN"
         "FIELD_CMD_PATTERN"
         "FIELD_ARGS_PATTERN"
+        "PLACEHOLDER_FILE_SELECT"
+        "PLACEHOLDER_DIR_SELECT"
+        "PLACEHOLDER_PASSWORD_SELECT"
     )
     
     local missing_vars=()
@@ -195,7 +198,7 @@ parse_menufile() {
     return 0
 }
 
-# Safe command execution with argument handling
+# Safe command execution with enhanced argument handling
 execute_command() {
     local cmd="$1"
     local args="$2"
@@ -212,17 +215,72 @@ execute_command() {
             while [[ "$processed_args" =~ \<([^>]+)\> ]]; do
                 placeholder="${BASH_REMATCH[1]}"
                 local user_input
+                local dialog_type="inputbox"  # default
                 
-                # Prompt user for input
-                if user_input=$(dialog --no-lines --inputbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
-                    processed_args="${processed_args//<$placeholder>/$user_input}"
-                else
-                    clear
-                    printf "%s\n" "$MSG_CANCELLED"
-                    printf "%s" "$MSG_PRESS_ENTER"
-                    read -r
-                    return 1
+                # Determine dialog type based on placeholder content
+                if [[ "$placeholder" =~ $PLACEHOLDER_FILE_SELECT ]]; then
+                    dialog_type="fselect"
+                elif [[ "$placeholder" =~ $PLACEHOLDER_DIR_SELECT ]]; then
+                    dialog_type="dselect"
+                elif [[ "$placeholder" =~ $PLACEHOLDER_PASSWORD_SELECT ]]; then
+                    dialog_type="passwordbox"
                 fi
+                
+                # Show appropriate dialog based on type
+                case "$dialog_type" in
+                    "fselect")
+                        if user_input=$(dialog --no-lines --fselect "$HOME/" 15 70 3>&1 1>&2 2>&3); then
+                            # Remove trailing slash if it's a directory selection for file
+                            user_input="${user_input%/}"
+                        else
+                            clear
+                            printf "%s\n" "$MSG_CANCELLED"
+                            printf "%s" "$MSG_PRESS_ENTER"
+                            read -r
+                            return 1
+                        fi
+                        ;;
+                    "dselect")
+                        if user_input=$(dialog --no-lines --dselect "$HOME/" 15 70 3>&1 1>&2 2>&3); then
+                            # Ensure directory has trailing slash
+                            [[ "$user_input" != */ ]] && user_input="${user_input}/"
+                        else
+                            clear
+                            printf "%s\n" "$MSG_CANCELLED"
+                            printf "%s" "$MSG_PRESS_ENTER"
+                            read -r
+                            return 1
+                        fi
+                        ;;
+                    "passwordbox")
+                        if user_input=$(dialog --no-lines --insecure --passwordbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
+                            # Password input successful
+                            :
+                        else
+                            clear
+                            printf "%s\n" "$MSG_CANCELLED"
+                            printf "%s" "$MSG_PRESS_ENTER"
+                            read -r
+                            return 1
+                        fi
+                        ;;
+                    *)
+                        # Default inputbox for unrecognized placeholders
+                        if user_input=$(dialog --no-lines --inputbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
+                            # Input successful
+                            :
+                        else
+                            clear
+                            printf "%s\n" "$MSG_CANCELLED"
+                            printf "%s" "$MSG_PRESS_ENTER"
+                            read -r
+                            return 1
+                        fi
+                        ;;
+                esac
+                
+                # Replace placeholder with user input
+                processed_args="${processed_args//<$placeholder>/$user_input}"
             done
             full_command="$cmd $processed_args"
         else
@@ -232,6 +290,7 @@ execute_command() {
     else
         full_command="$cmd"
     fi
+    
     clear
     if [[ "$COMMAND_DEBUG" == "1" ]]; then
         printf "$MSG_STARTING_COMMAND\n" "$full_command"

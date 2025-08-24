@@ -17,14 +17,20 @@ TODO: Installationsscript erstellen.
 
 ## Verwendung
 
-ATMIRAL sucht beim Aufruf im Verzeichnis `$HOME/.config/atmiral/menu` oder im eigenen Verzeichnis nach Menüdateien. Es sind einige Beispielordner und -Dateien im Repository, die sofort gefunden werden sollten. Eine Menüdatei besteht aus Konfigurationsabschnitten, die durch eine leerzeile voneinander getrennt sind. Jeder Konfigurationsabschnitt kann folgende Werte enthalten: 
+ATMIRAL sucht beim Aufruf im Verzeichnis `$HOME/.config/atmiral/menu` oder im eigenen Verzeichnis nach Menüdateien. Es sind einige Beispielordner und -Dateien im Repository, die sofort gefunden werden sollten. Eine Menüdatei besteht aus Konfigurationsabschnitten, die durch eine leerzeile voneinander getrennt sind. Jeder Konfigurationsabschnitt kann folgende Felder enthalten: 
 
 * Name: Anzeigename des Programms oder Befehls (nicht der eigentliche Befehl)
 * Beschreibung: Kurze Beschreibung, wird rechts neben dem Namen angezeigt.
 * Befehl: Der eigentliche Befehl, welcher beim Bestätigen des Menüeintrags aufgerufen wird. 
-* Argumente: jede Art von festen oder dynamischen Befehlsoptionen. Der Text zwischen `<` und `>` wird als Vorlage erkannt und im Menü beim Aufrufen abgefragt. 
+* Argumente: jede Art von festen oder dynamischen Befehlsoptionen. Der Text zwischen `<` und `>` wird als Platzhalter erkannt und im Menü beim Aufrufen abgefragt. 
 
-**Hinweis**: Die oben genannten Feldnamen sind für jede Sprache übersetzbar. Wird ATMIRAL in einer anderen Sprache als deutch verwendet, müssen auch die Feldnamen in dieser Sprache angegeben werden, sofern sie in der Sprachdatei übersetzt wurden. 
+Folgende Platzhalter können verwendet werden, um spezielle Dialogboxen während der Abfrage aufzurufen: 
+
+* `<Datei>`: Öffnet einen Dateiauswahldialog
+* `<Verzeichnis>`: Öffnet eine Verzeichnisauswahl.
+* `<Passwort>`: Eingabefeld für Passwörter.
+
+**Hinweis**: Die oben genannten Feldnamen und Platzhalter sind für jede Sprache übersetzbar. Wird ATMIRAL in einer anderen Sprache als deutch verwendet, müssen auch die Feldnamen und Platzhalter in dieser Sprache angegeben werden, sofern sie in der Sprachdatei übersetzt wurden. 
 
 Wer für das Menü eine dunkle Farbgebung bevorzugt, findet im Ordner eine `.dialogrc` Beispieldatei, welche in das Home-Verzeichnis kopiert werden kann. Sie enthält Darkmode-Farben und setzt auch die Option `visit_items` auf `ON`, um eine bessere Tastaturbedienung zu ermöglichen. Letztere Option wird jedoch bereits im Script beim Definieren des Menüs festgelegt. 
 

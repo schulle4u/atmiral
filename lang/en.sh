@@ -45,3 +45,8 @@ FIELD_NAME_PATTERN="^[Nn]ame:[[:space:]]*"
 FIELD_DESC_PATTERN="^[Dd]escription:[[:space:]]*"
 FIELD_CMD_PATTERN="^[Cc]ommand:[[:space:]]*"
 FIELD_ARGS_PATTERN="^[Aa]rguments:[[:space:]]*"
+
+# Placeholders for dialog box selection
+PLACEHOLDER_FILE_SELECT="^[Ff]ile"
+PLACEHOLDER_DIR_SELECT="^[Dd]irectory"
+PLACEHOLDER_PASSWORD_SELECT="^[Pp]assword"
