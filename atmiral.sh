@@ -14,6 +14,8 @@ COMMAND_DEBUG=0
 CONFIG_FILE=""
 if [ -e "/etc/atmiral.conf" ]; then
     CONFIG_FILE="/etc/atmiral.conf"
+elif [ -e "$HOME/.config/atmiral/atmiral.conf" ]; then
+    CONFIG_FILE="$HOME/atmiral/atmiral.conf"
 elif [ -e "$SCRIPT_DIR/atmiral.conf" ]; then
     CONFIG_FILE="$SCRIPT_DIR/atmiral.conf"
 fi
