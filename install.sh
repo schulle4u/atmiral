@@ -95,9 +95,9 @@ create_dir() {
     
     if [[ ! -d "$dir" ]]; then
         print_info "Creating directory: $dir"
-        mkdir -p "$dir"
-        chmod "$mode" "$dir"
+        mkdir -p "$dir" || return 1
     fi
+    chmod "$mode" "$dir"
 }
 
 # Copy file with proper permissions
@@ -107,8 +107,16 @@ copy_file() {
     local mode="${3:-644}"
     
     print_info "Copying: $(basename "$src") -> $dst"
-    cp "$src" "$dst"
-    chmod "$mode" "$dst"
+    if [ -d "$dst" ]; then
+        local filename=$(basename "$src")
+        cp "$src" "$dst/$filename" || return 1
+        chmod "$mode" "$dst/$filename"
+    else
+        cp "$src" "$dst" || return 1
+        if [ -f "$dst" ]; then
+            chmod "$mode" "$dst"
+        fi
+    fi
 }
 
 # Install system-wide
