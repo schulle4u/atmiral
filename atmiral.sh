@@ -12,8 +12,8 @@ COMMAND_DEBUG=0
 
 # Load config file
 CONFIG_FILE=""
-if [ -e "/etc/atmiral.conf" ]; then
-    CONFIG_FILE="/etc/atmiral.conf"
+if [ -e "/etc/atmiral/atmiral.conf" ]; then
+    CONFIG_FILE="/etc/atmiral/atmiral.conf"
 elif [ -e "$HOME/.config/atmiral/atmiral.conf" ]; then
     CONFIG_FILE="$HOME/atmiral/atmiral.conf"
 elif [ -e "$SCRIPT_DIR/atmiral.conf" ]; then
@@ -93,11 +93,18 @@ load_language_file() {
     return 0
 }
 
-# Load language file
-LANG_FILE="${SCRIPT_DIR}/lang/${ATMIRAL_LANG}.sh"
+if [[ -d "/usr/local/share/atmiral/lang/" ]]; then
+    LANGDIR="/usr/local/share/atmiral/lang/"
+elif [[ -d "$HOME/.local/share/atmiral/lang/" ]]; then
+    LANGDIR="$HOME/.local/share/atmiral/lang/"
+else
+    LANGDIR="$SCRIPT_DIR/lang/"
+fi
+
+LANG_FILE="${LANGDIR}/${ATMIRAL_LANG}.sh"
 if ! load_language_file "$LANG_FILE"; then
     # Fallback to english
-    LANG_FILE="${SCRIPT_DIR}/lang/en.sh"
+    LANG_FILE="${LANGDIR}/en.sh"
     if ! load_language_file "$LANG_FILE"; then
         echo "Error: No valid language file found." >&2
         exit 1
@@ -120,6 +127,8 @@ if [[ -n "${1:-}" && -d "$1" ]]; then
     MENUDIR="$1"
 elif [[ -d "$HOME/.config/atmiral/menu/" ]]; then
     MENUDIR="$HOME/.config/atmiral/menu/"
+elif [[ -d "/usr/local/share/atmiral/menu/" ]]; then
+    MENUDIR="/usr/local/share/atmiral/menu/"
 else
     MENUDIR="$SCRIPT_DIR/menu/"
 fi
