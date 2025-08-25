@@ -7,17 +7,35 @@ ATMIRAL (short for "Accessible text-based menu interface for running application
 
 ## Installation
 
-Clone the repository and make `atmiral.sh` executable. 
+Clone the repository and make `install.sh` executable. 
 
 ```
-chmod +x ./atmiral.sh
+chmod +x ./install.sh
 ```
 
-TODO: Create installation script.
+The following installation options are available: 
+
+* `./install.sh --user`: install for current user.
+* `sudo ./install.sh --system`: install system-wide, requires root permissions. 
+* `sudo ./install.sh --both`: install system-wide and for current user, requires root permissions. 
+* `sudo ./install.sh --uninstall`: uninstall ATMIRAL, could require root permissions. 
+
+You can also run ATMIRAL by calling `./atmiral.sh`  in the script's directory. 
 
 ## Usage
 
-When called, ATMIRAL searches for menu files in the directory `$HOME/.config/atmiral/menu` or in its own directory. There are some sample folders and files in the repository that should be found immediately. A menu file consists of configuration sections separated by a blank line. Each configuration section can contain the following fields: 
+### Menu directories
+
+Menu files are found in the following directories: 
+
+* Userdefined: call `atmiral <Pfad>`
+* In your home folder: `$HOME/.local/share/atmiral/menu/`
+* System-wide: `/usr/local/share/atmiral/menu/`
+* In the script's directory: `./menu/`
+
+### Creating menus
+
+A menu file consists of configuration sections separated by a blank line. Each configuration section can contain the following fields: 
 
 * Name: Display name of the program or command (not the actual command)
 * Description: Short description, displayed to the right.
@@ -32,9 +50,7 @@ The following placeholders are available to open special dialog boxes:
 
 **Note**: The field names and placeholders above can be translated into any language. If ATMIRAL is being used in a language other than English, the field names and placeholders must also be specified in that language, provided they have been translated in the relevant language file. 
 
-If you prefer the menu to have a dark colour scheme, you will find a sample `.dialogrc` file in this folder which you can copy into your home directory. It contains the colours for dark mode and also sets the `visit_items` option to `ON` to enable better keyboard operation. However, this option is already set in the script when the menu is defined.
-
-## Example
+### Example
 
 Here is a menu file with some system commands.
 
@@ -64,6 +80,19 @@ Description: Service control
 Command: sudo systemctl
 Arguments: <Action> <Service>
 ```
+
+### The user interface
+
+Once you have started ATMIRAL, the files and subfolders that have been created in the appropriate menu directory will be displayed as a two-column list containing the file names and descriptions. You can navigate through these lists using the up and down arrow keys, confirming your selection by pressing Enter. There is an option to return to the parent menu at the top of each list. While ATMIRAL is open, all commands are executed in its environment. This means that, after each command has been executed, you always return to the current menu. Pressing Escape exits the ATMIRAL interface and returns to the normal shell environment.
+
+### Configuration
+
+Some configuration options are available in the file `atmiral.conf`: 
+
+* `ATMIRAL_LANG`: Interface language (language file name without file extension, e.g. `en`). 
+* `COMMAND_DEBUG`: Set 1 to turn on command output.
+
+If you prefer the menu to have a dark colour scheme, you will find a sample `.dialogrc` file in this folder which you can copy into your home directory. It contains the colours for dark mode and also sets the `visit_items` option to `ON` to enable better keyboard operation. However, this option is already set in the script when the menu is defined.
 
 ## Development
 
