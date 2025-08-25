@@ -10,12 +10,17 @@ Name: Updates
 Beschreibung: Nach Updates suchen
 Befehl: sudo apt update && sudo apt upgrade
 
-Name: Sprachausgabe
-Beschreibung: Eingegebenen Text sprechen
-Befehl: espeak-ng
-Argumente: -v de -a 100 -s 300 "<Text>"
-
 Name: Dienststeuerung
 Beschreibung: Dienststeuerung
 Befehl: sudo systemctl
 Argumente: <Aktion> <Dienst>
+
+Name: Verzeichnis auflisten
+Beschreibung: Zeigt Dateien in einem Verzeichnis
+Befehl: ls
+Argumente: -la <verzeichnis>
+
+Name: Datei suchen
+Beschreibung: Sucht nach Dateien
+Befehl: find
+Argumente: <pfad> -name "<muster>" -type f

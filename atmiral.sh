@@ -15,7 +15,7 @@ CONFIG_FILE=""
 if [ -e "/etc/atmiral/atmiral.conf" ]; then
     CONFIG_FILE="/etc/atmiral/atmiral.conf"
 elif [ -e "$HOME/.config/atmiral/atmiral.conf" ]; then
-    CONFIG_FILE="$HOME/atmiral/atmiral.conf"
+    CONFIG_FILE="$HOME/.config/atmiral/atmiral.conf"
 elif [ -e "$SCRIPT_DIR/atmiral.conf" ]; then
     CONFIG_FILE="$SCRIPT_DIR/atmiral.conf"
 fi
@@ -125,8 +125,8 @@ check_dependencies
 # Looking for menu list files
 if [[ -n "${1:-}" && -d "$1" ]]; then
     MENUDIR="$1"
-elif [[ -d "$HOME/.config/atmiral/menu/" ]]; then
-    MENUDIR="$HOME/.config/atmiral/menu/"
+elif [[ -d "$HOME/.local/share/atmiral/menu/" ]]; then
+    MENUDIR="$HOME/.local/share/atmiral/menu/"
 elif [[ -d "/usr/local/share/atmiral/menu/" ]]; then
     MENUDIR="/usr/local/share/atmiral/menu/"
 else
