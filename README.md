@@ -26,12 +26,12 @@ You can also run ATMIRAL by calling `./atmiral.sh`  in the script's directory.
 
 ### Menu directories
 
-Menu files are found in the following directories: 
+Menu files are found in the following directories, descending priority: 
 
 * Userdefined: call `atmiral <Pfad>`
 * In your home folder: `$HOME/.local/share/atmiral/menu/`
 * System-wide: `/usr/local/share/atmiral/menu/`
-* In the script's directory: `./menu/`
+* In the script's directory (last fallback): `./menu/`
 
 ### Creating menus
 

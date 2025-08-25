@@ -26,12 +26,12 @@ ATMIRAL kann durch Aufruf von `atmiral.sh` auch direkt aus dem Quellcode-Verzeic
 
 ### Menüverzeichnisse
 
-Die Menüdateien werden in folgenden Ordnern gefunden: 
+Die Menüdateien werden in folgenden Ordnern gefunden, aufgeführt in absteigender Priorität: 
 
 * Benutzerdefiniert: Aufruf `atmiral <Pfad>`
 * Im Benutzerordner: `$HOME/.local/share/atmiral/menu/`
 * Systemweit: `/usr/local/share/atmiral/menu/`
-* Im Skriptverzeichnis: `./menu/`
+* Im Skriptverzeichnis (letztes Fallbackverzeichnis): `./menu/`
 
 ### Menüs erstellen
 
