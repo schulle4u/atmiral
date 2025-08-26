@@ -15,7 +15,9 @@ MSG_WARNING_NO_VALID_ENTRIES="Warning: No valid entries found in '%s'."
 
 # Dialog UI
 UI_TITLE="ATMIRAL"
-UI_MENU_PROMPT="Please select:"
+UI_FOLDER_TITLE="Folder list"
+UI_LIST_TITLE="List contents"
+UI_MENU_PROMPT="Please select an item and press enter to confirm, escape to exit ATMIRAL:"
 UI_BACK_OPTION="..."
 UI_BACK_DESCRIPTION="Parent level"
 UI_FOLDER_PREFIX="Folder: "

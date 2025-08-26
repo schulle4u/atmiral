@@ -357,7 +357,8 @@ run_textmenu() {
 
         clear
         local choice
-        choice=$(dialog --begin 1 1 \
+        choice=$(dialog --begin 3 1 \
+            --title "$UI_LIST_TITLE" \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
@@ -424,7 +425,8 @@ run_menu() {
         fi
 
         local choice
-        choice=$(dialog --begin 1 1 \
+        choice=$(dialog --begin 3 1 \
+            --title "$UI_FOLDER_TITLE" \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \

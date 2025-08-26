@@ -15,7 +15,9 @@ MSG_WARNING_NO_VALID_ENTRIES="Warnung: Keine gültigen Einträge in '%s' gefunde
 
 # Dialog UI
 UI_TITLE="ATMIRAL"
-UI_MENU_PROMPT="Bitte wählen:"
+UI_FOLDER_TITLE="Ordnerliste"
+UI_LIST_TITLE="Listeninhalt"
+UI_MENU_PROMPT="Bitte einen Eintrag wählen und mit enter bestätigen, Escape zum Beenden von ATMIRAL:"
 UI_BACK_OPTION="..."
 UI_BACK_DESCRIPTION="Eine Ebene höher"
 UI_FOLDER_PREFIX="Ordner: "
