@@ -142,19 +142,19 @@ install_system() {
     # Install language files
     for lang_file in "$SCRIPT_DIR"/lang/*.sh; do
         [[ -f "$lang_file" ]] || continue
-        copy_file "$lang_file" "/usr/local/share/${PROGRAM_NAME}/lang/" 755
+        copy_file "$lang_file" "/usr/local/share/${PROGRAM_NAME}/lang/"
     done
     
     # Install example menu files
     for menu_file in "$SCRIPT_DIR"/menu/*.txt; do
         [[ -f "$menu_file" ]] || continue
-        copy_file "$menu_file" "/usr/local/share/${PROGRAM_NAME}/menu/" 755
+        copy_file "$menu_file" "/usr/local/share/${PROGRAM_NAME}/menu/"
     done
     
     # Install configuration file
     if [[ -f "$SCRIPT_DIR/${PROGRAM_NAME}.conf" ]]; then
         if [[ ! -f "/etc/${PROGRAM_NAME}/${PROGRAM_NAME}.conf" ]]; then
-            copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.conf" "/etc/${PROGRAM_NAME}/" 755
+            copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.conf" "/etc/${PROGRAM_NAME}/"
         else
             print_warning "System config already exists, not overwriting"
         fi
@@ -182,19 +182,19 @@ install_user() {
     # Install language files
     for lang_file in "$SCRIPT_DIR"/lang/*.sh; do
         [[ -f "$lang_file" ]] || continue
-        copy_file "$lang_file" "$HOME/.local/share/${PROGRAM_NAME}/lang/" 755
+        copy_file "$lang_file" "$HOME/.local/share/${PROGRAM_NAME}/lang/"
     done
     
     # Install example menu files
     for menu_file in "$SCRIPT_DIR"/menu/*.txt; do
         [[ -f "$menu_file" ]] || continue
-        copy_file "$menu_file" "$HOME/.local/share/${PROGRAM_NAME}/menu/" 755
+        copy_file "$menu_file" "$HOME/.local/share/${PROGRAM_NAME}/menu/"
     done
     
     # Install user configuration file
     if [[ -f "$SCRIPT_DIR/${PROGRAM_NAME}.conf" ]]; then
         if [[ ! -f "$HOME/.config/${PROGRAM_NAME}/${PROGRAM_NAME}.conf" ]]; then
-            copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.conf" "$HOME/.config/${PROGRAM_NAME}/" 755
+            copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.conf" "$HOME/.config/${PROGRAM_NAME}/"
         else
             print_warning "User config already exists, not overwriting"
         fi
@@ -223,7 +223,7 @@ setup_user_config() {
     # Install user configuration file if it doesn't exist
     if [[ -f "$SCRIPT_DIR/${PROGRAM_NAME}.conf" ]]; then
         if [[ ! -f "$HOME/.config/${PROGRAM_NAME}/${PROGRAM_NAME}.conf" ]]; then
-            copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.conf" "$HOME/.config/${PROGRAM_NAME}/" 755
+            copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.conf" "$HOME/.config/${PROGRAM_NAME}/"
         else
             print_warning "User config already exists, not overwriting"
         fi
