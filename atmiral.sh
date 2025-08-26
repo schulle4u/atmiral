@@ -4,6 +4,7 @@
 
 set -euo pipefail
 
+# Determine current script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Default configuration values
@@ -121,6 +122,12 @@ check_dependencies() {
 }
 
 check_dependencies
+
+# Set initial options for dialog
+export DIALOGOPTS="--visit-items --no-lines \
+    --backtitle \"$UI_TITLE - ${USER}@${HOSTNAME}\" \
+    --ok-label \"$UI_OK_BUTTON\" \
+    --cancel-label \"$UI_CANCEL_BUTTON\""
 
 # Looking for menu list files
 if [[ -n "${1:-}" && -d "$1" ]]; then
@@ -240,7 +247,7 @@ execute_command() {
                 # Show appropriate dialog based on type
                 case "$dialog_type" in
                     "fselect")
-                        if user_input=$(dialog --no-lines --fselect "$HOME/" 15 70 3>&1 1>&2 2>&3); then
+                        if user_input=$(dialog --fselect "$HOME/" 15 70 3>&1 1>&2 2>&3); then
                             # Remove trailing slash if it's a directory selection for file
                             user_input="${user_input%/}"
                         else
@@ -252,7 +259,7 @@ execute_command() {
                         fi
                         ;;
                     "dselect")
-                        if user_input=$(dialog --no-lines --dselect "$HOME/" 15 70 3>&1 1>&2 2>&3); then
+                        if user_input=$(dialog --dselect "$HOME/" 15 70 3>&1 1>&2 2>&3); then
                             # Ensure directory has trailing slash
                             [[ "$user_input" != */ ]] && user_input="${user_input}/"
                         else
@@ -264,7 +271,7 @@ execute_command() {
                         fi
                         ;;
                     "passwordbox")
-                        if user_input=$(dialog --no-lines --insecure --passwordbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
+                        if user_input=$(dialog --insecure --passwordbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
                             # Password input successful
                             :
                         else
@@ -277,7 +284,7 @@ execute_command() {
                         ;;
                     *)
                         # Default inputbox for unrecognized placeholders
-                        if user_input=$(dialog --no-lines --inputbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
+                        if user_input=$(dialog --inputbox "$(printf "$UI_INPUT_PROMPT" "$placeholder")" 10 60 3>&1 1>&2 2>&3); then
                             # Input successful
                             :
                         else
@@ -328,13 +335,13 @@ run_textmenu() {
     local menufile="$1"
     
     if ! parse_menufile "$menufile"; then
-        dialog --no-lines --ok-label "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_LOADING_FILE" "$menufile")" 10 70
+        dialog --msgbox "$(printf "$UI_ERROR_LOADING_FILE" "$menufile")" 10 70
         clear
         return 1
     fi
     
     if [[ ${#PARSED[@]} -eq 0 ]]; then
-        dialog --no-lines --ok-label "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES" "$menufile")" 10 70
+        dialog --msgbox "$(printf "$UI_ERROR_NO_ENTRIES" "$menufile")" 10 70
         clear
         return 1
     fi
@@ -350,8 +357,7 @@ run_textmenu() {
 
         clear
         local choice
-        choice=$(dialog --visit-items --no-lines --begin 1 1 --backtitle "$UI_TITLE - ${USER}@${HOSTNAME}" \
-            --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
+        choice=$(dialog --begin 1 1 \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
@@ -412,14 +418,13 @@ run_menu() {
 
         clear
         if [[ ${#display_entries[@]} -eq 0 ]]; then
-            dialog --no-lines --ok-label "$UI_OK_BUTTON" --msgbox "$(printf "$UI_ERROR_NO_ENTRIES_DIR" "$current_dir")" 10 70
+            dialog --msgbox "$(printf "$UI_ERROR_NO_ENTRIES_DIR" "$current_dir")" 10 70
             clear
             return 0
         fi
 
         local choice
-        choice=$(dialog --visit-items --no-lines --begin 1 1 --backtitle "$UI_TITLE - ${USER}@${HOSTNAME}" \
-            --ok-label "$UI_OK_BUTTON" --cancel-label "$UI_CANCEL_BUTTON" \
+        choice=$(dialog --begin 1 1 \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
