@@ -78,6 +78,7 @@ check_source_files() {
     local missing_files=()
     
     [[ ! -f "$SCRIPT_DIR/${PROGRAM_NAME}.sh" ]] && missing_files+=("${PROGRAM_NAME}.sh")
+    [[ ! -f "$SCRIPT_DIR/atmiralfm.sh" ]] && missing_files+=("atmiralfm.sh")
     [[ ! -d "$SCRIPT_DIR/lang" ]] && missing_files+=("lang/")
     [[ ! -d "$SCRIPT_DIR/menu" ]] && missing_files+=("menu/")
     
@@ -138,6 +139,9 @@ install_system() {
     
     # Install main script
     copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.sh" "/usr/local/bin/${PROGRAM_NAME}" 755
+
+    # Install file browser
+    copy_file "$SCRIPT_DIR/atmiralfm.sh" "/usr/local/bin/atmiralfm" 755
     
     # Install language files
     for lang_file in "$SCRIPT_DIR"/lang/*.sh; do
@@ -178,6 +182,9 @@ install_user() {
     
     # Install main script
     copy_file "$SCRIPT_DIR/${PROGRAM_NAME}.sh" "$HOME/.local/bin/${PROGRAM_NAME}" 755
+    
+    # Install file browser
+    copy_file "$SCRIPT_DIR/atmiralfm.sh" "$HOME/.local/bin/atmiralfm" 755
     
     # Install language files
     for lang_file in "$SCRIPT_DIR"/lang/*.sh; do
