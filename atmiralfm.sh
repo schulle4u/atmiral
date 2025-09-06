@@ -353,6 +353,12 @@ while true; do
         "${entries[@]}"); then
         break  # Exit on escape or cancel
     fi
+
+    # Check read permissions
+    if [[ ! -r "$CWD/$choice" ]]; then
+        run_dialog --msgbox "$UI_FILE_NO_PERMISSION" 10 70
+        continue
+    fi
     
     if [ "$choice" = ".." ]; then
         # Back to parent
