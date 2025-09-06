@@ -3,7 +3,10 @@ Barrierefreies textbasiertes Menü zum Starten von Programmen unter Linux
 
 ## Beschreibung
 
-ATMIRAL (Abkürzung für "Accessible text-based menu interface for running applications on Linux") ist ein benutzerfreundliches Startmenü für die Linux-Shell zum schnellen Aufrufen häufig verwendeter Programme und Befehle. Über eine Ordnerstruktur mit menschenlesbaren Textdateien kann das Menü individuell zusammengestellt werden und ist somit an jedes Linux-System anpassbar. Es eignet sich sowohl für Anfänger, um ihnen die Scheu vor Befehlseingaben zu nehmen, als auch für Menschen, die für bestimmte Abläufe bewusst eine eingeschränkte Arbeitsumgebung bevorzugen. Es soll dabei weder die Befehlseingabe noch eine komplette grafische Oberfläche auf Shellebene ersetzen.
+ATMIRAL (Abkürzung für "Accessible text-based menu interface for running applications on Linux") ist ein benutzerfreundliches Startmenü für die Linux-Shell zum schnellen Aufrufen häufig verwendeter Programme und Befehle. Über eine Ordnerstruktur mit menschenlesbaren Textdateien kann das Menü individuell zusammengestellt werden und ist somit an jedes Linux-System anpassbar. Es eignet sich sowohl für Anfänger, um ihnen die Scheu vor Befehlseingaben zu nehmen, als auch für Menschen, die für bestimmte Abläufe bewusst eine eingeschränkte Arbeitsumgebung bevorzugen. Es soll dabei weder die Befehlseingabe noch eine komplette grafische Oberfläche auf Shellebene ersetzen. Derzeit sind folgende Module enthalten: 
+
+* ATMIRAL (`atmiral.sh`): Das Hauptprogramm mit individuell anpassbaren Befehlssammlungen. 
+* ATMIRAL Dateibrowser (`atmiralfm.sh`): Ein einfacher Dateibrowser zum Auflisten und Öffnen von Dateien. 
 
 ## Installation
 
@@ -20,9 +23,9 @@ Folgende Installationsoptionen sind verfügbar:
 * `sudo ./install.sh --both`: Installation systemweit und für den aktuellen Benutzer, benötigt Root-Rechte. 
 * `sudo ./install.sh --uninstall`: ATMIRAL vom System entfernen, benötigt je nach vorheriger Installation Root-Rechte. 
 
-ATMIRAL kann durch Aufruf von `atmiral.sh` auch direkt aus dem Quellcode-Verzeichnis ausgeführt werden. 
+Nach der Installation sind die einzelnen Module in der gewählten Installationsumgebung aufrufbar, z. B. `atmiral` für das Hauptprogramm oder `atmiralfm` für den dateibrowser. ATMIRAL kann durch Aufruf von `atmiral.sh` auch direkt aus dem Quellcode-Verzeichnis ausgeführt werden, sollte keine Installation gewünscht sein. 
 
-## Verwendung
+## Verwendung des Hauptprogramms
 
 ### Menüverzeichnisse
 
@@ -93,6 +96,20 @@ Einige Konfigurationsoptionen lassen sich in der Datei `atmiral.conf` festlegen:
 * `COMMAND_DEBUG`: Auf 1 setzen, um die Ausgabe der Befehle einzuschalten.
 
 Wer für das Menü eine dunkle Farbgebung bevorzugt, findet im Ordner eine `.dialogrc` Beispieldatei, welche in das Home-Verzeichnis kopiert werden kann. Sie enthält Darkmode-Farben und setzt auch die Option `visit_items` auf `ON`, um eine bessere Tastaturbedienung zu ermöglichen. Letztere Option wird jedoch bereits im Script beim Definieren des Menüs festgelegt. 
+
+## Dateibrowser
+
+Der ATMIRAL-Dateibrowser wird mit dem Befehl `atmiralfm` bzw. `atmiralfm.sh` im Skriptverzeichnis aufgerufen. Das Homeverzeichnis des aktuellen Benutzers ist standardmäßig als Startverzeichnis festgelegt. Ein anderes Startverzeichnis kann als Argument an `atmiralfm` übergeben werden. Die Navigation durch Dateien und Ordner ist selbsterklärend und funktioniert entweder mittels Pfeiltasten hoch und runter oder durch die Eingabe des Anfangsbuchstabens eines Eintrags sowie der Bestätigung mit Enter. Wie in vielen Dateimanagern üblich befindet sich am Anfang jeder Liste die Möglichkeit in den nächsthöheren Ordner zu wechseln. Am linken oberen Bildschirmrand ist eine dem Shell-Prompt ähnliche Statuszeile hinterlegt, welche den Benutzer und Hostnamen sowie den aktuellen Ordnerpfad anzeigt. 
+
+Nach der Auswahl einer datei öffnet sich ein Aktionsmenü, welches verschiedene Optionen zum Betrachten der Datei anbietet. Je nach Dateityp und installierten Paketen kann die Anzeige variieren. Folgende Auswahlmöglichkeiten sind möglich: 
+
+* Textdateien: nano, vim, less
+* Audio- und Video: mpv
+* Bilder: feh
+* Benutzerdefiniert: Erlaubt die Eingabe eines benutzerdefinierten Befehls zum Betrachten der Datei.
+* Ausführen: Prüft, ob die Datei ausführbar ist und startet sie direkt. 
+* Info: Zeigt Dateiinformationen an.
+* Abbruch: Schließt das menü und kehrt in die Dateiliste zurück. 
 
 ## Entwicklung
 

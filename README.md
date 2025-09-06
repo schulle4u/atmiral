@@ -3,7 +3,10 @@ Accessible text-based menu interface for running applications on Linux
 
 ## Description
 
-ATMIRAL (short for "Accessible text-based menu interface for running applications on Linux") is a user-friendly start menu for the Linux shell, allowing you to quickly access frequently used programs and commands. The menu can be customised using a folder structure with human-readable text files, making it adaptable to any Linux system. It is ideal for beginners, helping them to overcome their fear of entering commands, and for those who prefer to restrict certain processes to a specific working environment. However, it is not intended to replace command input or a complete graphical user interface.
+ATMIRAL (short for "Accessible text-based menu interface for running applications on Linux") is a user-friendly start menu for the Linux shell, allowing you to quickly access frequently used programs and commands. The menu can be customised using a folder structure with human-readable text files, making it adaptable to any Linux system. It is ideal for beginners, helping them to overcome their fear of entering commands, and for those who prefer to restrict certain processes to a specific working environment. However, it is not intended to replace command input or a complete graphical user interface. The following modules are currently available: 
+
+* ATMIRAL (`atmiral.sh`): The main program with customizable sets of commands.
+* ATMIRAL File Browser (`atmiralfm.sh`): A simple file browser to list and open files. 
 
 ## Installation
 
@@ -20,9 +23,9 @@ The following installation options are available:
 * `sudo ./install.sh --both`: install system-wide and for current user, requires root permissions. 
 * `sudo ./install.sh --uninstall`: uninstall ATMIRAL, could require root permissions. 
 
-You can also run ATMIRAL by calling `./atmiral.sh`  in the script's directory. 
+All modules are available in the respective installation environment, e.g. `atmiral` for the main program or `atmiralfm` for the file browser. You can also run ATMIRAL by calling `./atmiral.sh`  in the script's directory, in case you prefer not to install it. 
 
-## Usage
+## Using the main program
 
 ### Menu directories
 
@@ -93,6 +96,20 @@ Some configuration options are available in the file `atmiral.conf`:
 * `COMMAND_DEBUG`: Set 1 to turn on command output.
 
 If you prefer the menu to have a dark colour scheme, you will find a sample `.dialogrc` file in this folder which you can copy into your home directory. It contains the colours for dark mode and also sets the `visit_items` option to `ON` to enable better keyboard operation. However, this option is already set in the script when the menu is defined.
+
+## File browser
+
+The Admiral file browser can be launched using the command `atmiralfm` or `atmiralfm.sh` in the script directory. The home directory of the current user is set as the start directory by default. A different start directory can be specified as an argument when calling `atmiralfm`. Navigating through files and folders is straightforward and can be done using the up and down arrow keys, or by entering the first letter of an entry and confirming with the Enter key. As with many file managers, there is an option at the top of each list to move to the next higher folder. In the top-left corner of the screen is a status bar similar to the shell prompt which displays the user and host name, as well as the current folder path. 
+
+After selecting a file, an action menu opens offering various options for viewing the file. The display may vary depending on the file type and installed packages. The following options are available:
+ 
+* Text files: nano, vim, less
+* Audio and video: mpv
+* Images: feh
+* Custom: Allows to enter a custom command to open the file.
+* Execute: Checks whether the file is executable and starts it directly.
+* Info: Display file information.
+* Cancel: Closes the menu and returns to the file list.
 
 ## Development
 
