@@ -247,8 +247,9 @@ uninstall() {
     
     # Remove system files (if running as root)
     if [[ $EUID -eq 0 ]]; then
-        if [[ -f "/usr/local/bin/${PROGRAM_NAME}" ]]; then
+        if [[ -f "/usr/local/bin/${PROGRAM_NAME}" && -f "/usr/local/bin/atmiralfm" ]]; then
             rm -f "/usr/local/bin/${PROGRAM_NAME}"
+            rm -f "/usr/local/bin/atmiralfm"
             removed_items+=("System binary")
         fi
         
@@ -268,8 +269,9 @@ uninstall() {
     fi
     
     # Remove user files
-    if [[ -f "$HOME/.local/bin/${PROGRAM_NAME}" ]]; then
+    if [[ -f "$HOME/.local/bin/${PROGRAM_NAME}" && -f "$HOME/.local/bin/atmiralfm" ]]; then
         rm -f "$HOME/.local/bin/${PROGRAM_NAME}"
+        rm -f "$HOME/.local/bin/atmiralfm"
         removed_items+=("User binary")
     fi
     
