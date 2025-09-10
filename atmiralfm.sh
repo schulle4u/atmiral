@@ -123,6 +123,8 @@ check_dependencies
 # Set initial options for dialog
 export DIALOGOPTS="--visit-items --no-lines \
     --ok-label \"$UI_OK_BUTTON\" \
+    --yes-label \"$UI_YES_BUTTON\" \
+    --no-label \"$UI_NO_BUTTON\" \
     --cancel-label \"$UI_CANCEL_BUTTON\""
 
 # Set starting directory and fallback
@@ -353,12 +355,6 @@ while true; do
         "${entries[@]}"); then
         break  # Exit on escape or cancel
     fi
-
-    # Check read permissions
-    if [[ ! -r "$CWD/$choice" ]]; then
-        run_dialog --msgbox "$UI_FILE_NO_PERMISSION" 10 70
-        continue
-    fi
     
     if [ "$choice" = ".." ]; then
         # Back to parent
@@ -367,6 +363,12 @@ while true; do
     fi
 
     if [ -d "$CWD/$choice" ]; then
+        # Check read permissions
+        if [[ ! -r "$CWD/$choice" ]]; then
+            run_dialog --msgbox "$UI_FILE_NO_PERMISSION" 10 70
+           continue
+        fi
+
         # Jump into subfolder
         CWD="$CWD/$choice"
         continue
@@ -400,6 +402,9 @@ while true; do
             actions+=("$ACTION_RUN" "$ACTION_RUN_DESCRIPTION")
         fi
         actions+=("$ACTION_CUSTOM" "$ACTION_CUSTOM_DESCRIPTION")
+        actions+=("$ACTION_COPY" "$ACTION_COPY_DESCRIPTION")
+        actions+=("$ACTION_MOVE" "$ACTION_MOVE_DESCRIPTION")
+        actions+=("$ACTION_DELETE" "$ACTION_DELETE_DESCRIPTION")
         actions+=("$ACTION_INFO" "$ACTION_INFO_DESCRIPTION")
         actions+=("$ACTION_CANCEL" "$ACTION_CANCEL_DESCRIPTION")
 
@@ -437,6 +442,54 @@ while true; do
 
                     # Re-build and run command
                     (bash -c "${quoted_parts[*]}")
+                fi
+                ;;
+            "$ACTION_COPY")
+                clear
+                if ! copy_cmd=$(run_dialog --title "$ACTION_COPY" --fselect "$HOME/" 15 70); then
+                    continue
+                fi
+
+                (cp "$CWD/$choice" "$copy_cmd")
+                exit_code=$?
+                if [[ $exit_code -eq 0 ]]; then
+                    clear
+                    run_dialog --msgbox "$MSG_COMMAND_SUCCESS" 10 70
+                else
+                    clear
+                    run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
+                fi
+                ;;
+            "$ACTION_MOVE")
+                clear
+                if ! move_cmd=$(run_dialog --title "$ACTION_MOVE" --fselect "$HOME/" 15 70); then
+                    continue
+                fi
+                
+                (mv "$CWD/$choice" "$move_cmd")
+                exit_code=$?
+                if [[ $exit_code -eq 0 ]]; then
+                    clear
+                    run_dialog --msgbox "$MSG_COMMAND_SUCCESS" 10 70
+                else
+                    clear
+                    run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
+                fi
+                ;;
+            "$ACTION_DELETE")
+                clear
+                if ! delete_cmd=$(run_dialog --title "$ACTION_DELETE" --yesno "$(printf "$ACTION_DELETE_CONFIRM" "$CWD/$choice\n")" 15 70); then
+                    continue
+                fi
+
+                (rm --interactive=never "$CWD/$choice")
+                exit_code=$?
+                if [[ $exit_code -eq 0 ]]; then
+                    clear
+                    run_dialog --msgbox "$MSG_COMMAND_SUCCESS" 10 70
+                else
+                    clear
+                    run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
                 fi
                 ;;
             "$ACTION_INFO")

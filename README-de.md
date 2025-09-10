@@ -108,6 +108,9 @@ Nach der Auswahl einer datei öffnet sich ein Aktionsmenü, welches verschiedene
 * Bilder: feh
 * Benutzerdefiniert: Erlaubt die Eingabe eines benutzerdefinierten Befehls zum Betrachten der Datei.
 * Ausführen: Prüft, ob die Datei ausführbar ist und startet sie direkt. 
+* Kopieren nach: Datei an einen anderen Ort kopieren
+* Verschieben nach: Datei an einen anderen Ort verschieben.
+* Löschen: Datei nach Bestätigung löschen.
 * Info: Zeigt Dateiinformationen an.
 * Abbruch: Schließt das menü und kehrt in die Dateiliste zurück. 
 

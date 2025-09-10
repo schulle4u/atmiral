@@ -108,6 +108,9 @@ After selecting a file, an action menu opens offering various options for viewin
 * Images: feh
 * Custom: Allows to enter a custom command to open the file.
 * Execute: Checks whether the file is executable and starts it directly.
+* Copy to: Copy file to another location
+* Move to: Move file to another location.
+* Delete: Removes the file after confirmation.
 * Info: Display file information.
 * Cancel: Closes the menu and returns to the file list.
 
