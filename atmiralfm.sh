@@ -442,6 +442,11 @@ while true; do
 
                     # Re-build and run command
                     (bash -c "${quoted_parts[*]}")
+                    exit_code=$?
+                    if [[ ! $exit_code -eq 0 ]]; then
+                        clear
+                        run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
+                    fi
                 else
                     clear
                     run_dialog --msgbox "$UI_FM_CUSTOM_ERROR" 10 70
