@@ -502,7 +502,7 @@ while true; do
                 info_message+="---------------------------------\n"
                 info_message+=$(printf "$INFO_MSG_TYPE" "$detailed_info\n")
                 info_message+=$(printf "$INFO_MSG_SIZE" "$(du -sh "$CWD/$choice" 2>/dev/null | awk '{print $1}')\n")
-                info_message+=$(printf "$INFO_MSG_PERMS" "$(stat -c '%A' "$CWD/$choice" 2>/dev/null)\n")
+                info_message+=$(printf "$INFO_MSG_PERMS" "$(stat -c '%A (%G:%U)' "$CWD/$choice" 2>/dev/null)\n")
 
                 if ! info=$(run_dialog --title "$ACTION_INFO" --msgbox "$info_message" 0 0); then
                     continue
