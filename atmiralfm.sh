@@ -442,6 +442,9 @@ while true; do
 
                     # Re-build and run command
                     (bash -c "${quoted_parts[*]}")
+                else
+                    clear
+                    run_dialog --msgbox "$UI_FM_CUSTOM_ERROR" 10 70
                 fi
                 ;;
             "$ACTION_COPY")
