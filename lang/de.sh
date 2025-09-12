@@ -114,3 +114,12 @@ INFO_MSG_PATH="Pfad: %s"
 INFO_MSG_TYPE="Typ: %s"
 INFO_MSG_SIZE="Dateigröße: %s"
 INFO_MSG_PERMS="Berechtigungen: %s"
+
+# Exit codes
+EXIT_MSG_INVALID="Ungültiger Exit-Code '%s'. Es muss eine positive Ganzzahl sein."
+EXIT_MSG_0="Befehl erfolgreich ausgeführt."
+EXIT_MSG_1="Fehler beim Ausführen des Befehls: Allgemeiner Fehler."
+EXIT_MSG_2="Fehler: Falsche Verwendung von Argumenten."
+EXIT_MSG_126="Fehler: Ungenügende Berechtigung."
+EXIT_MSG_127="Fehler: Befehl nicht gefunden."
+EXIT_MSG_UNKNOWN="Fehler: Exit-Code '%d'"

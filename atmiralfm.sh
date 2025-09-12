@@ -136,6 +136,41 @@ else
     CWD=$SCRIPT_DIR
 fi
 
+# Translate some expected exit codes into human-readable messages
+exit_code_to_message() {
+    if [[ -z "$1" ]]; then
+        local exit_code=$?
+    else
+        local exit_code=$1
+    fi
+
+    if ! [[ "$exit_code" =~ ^[0-9]+$ ]]; then
+        printf "$EXIT_MSG_INVALID" "$exit_code" >&2
+        return 1
+    fi
+
+    case $exit_code in
+        0)
+            echo "$EXIT_MSG_0"
+            ;;
+        1)
+            echo "$EXIT_MSG_1"
+            ;;
+        2)
+            echo "$EXIT_MSG_2"
+            ;;
+        126)
+            echo "$EXIT_MSG_126"
+            ;;
+        127)
+            echo "$EXIT_MSG_127"
+            ;;
+        *)
+            printf "$EXIT_MSG_UNKNOWN" "$exit_code"
+            ;;
+    esac
+}
+
 # Get mimetype
 get_safe_mimetype() {
     local filepath="$1"
@@ -443,9 +478,10 @@ while true; do
                     # Re-build and run command
                     (bash -c "${quoted_parts[*]}")
                     exit_code=$?
+                    exit_message=$(exit_code_to_message "$exit_code")
                     if [[ ! $exit_code -eq 0 ]]; then
                         clear
-                        run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
+                        run_dialog --msgbox "$exit_message" 10 70
                     fi
                 else
                     clear
@@ -460,12 +496,13 @@ while true; do
 
                 (cp "$CWD/$choice" "$copy_cmd")
                 exit_code=$?
+                exit_message=$(exit_code_to_message "$exit_code")
                 if [[ $exit_code -eq 0 ]]; then
                     clear
-                    run_dialog --msgbox "$MSG_COMMAND_SUCCESS" 10 70
+                    run_dialog --msgbox "$exit_message" 10 70
                 else
                     clear
-                    run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
+                    run_dialog --msgbox "$exit_message" 10 70
                 fi
                 ;;
             "$ACTION_MOVE")
@@ -476,12 +513,13 @@ while true; do
                 
                 (mv "$CWD/$choice" "$move_cmd")
                 exit_code=$?
+                exit_message=$(exit_code_to_message "$exit_code")
                 if [[ $exit_code -eq 0 ]]; then
                     clear
-                    run_dialog --msgbox "$MSG_COMMAND_SUCCESS" 10 70
+                    run_dialog --msgbox "$exit_message" 10 70
                 else
                     clear
-                    run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
+                    run_dialog --msgbox "$exit_message" 10 70
                 fi
                 ;;
             "$ACTION_DELETE")
@@ -492,12 +530,13 @@ while true; do
 
                 (rm --interactive=never "$CWD/$choice")
                 exit_code=$?
+                exit_message=$(exit_code_to_message "$exit_code")
                 if [[ $exit_code -eq 0 ]]; then
                     clear
-                    run_dialog --msgbox "$MSG_COMMAND_SUCCESS" 10 70
+                    run_dialog --msgbox "$exit_message" 10 70
                 else
                     clear
-                    run_dialog --msgbox "$(printf "$MSG_COMMAND_ERROR\n" "$exit_code")" 10 70
+                    run_dialog --msgbox "$exit_message" 10 70
                 fi
                 ;;
             "$ACTION_INFO")

@@ -114,3 +114,12 @@ INFO_MSG_PATH="Path: %s"
 INFO_MSG_TYPE="Type: %s"
 INFO_MSG_SIZE="File size: %s"
 INFO_MSG_PERMS="Permissions: %s"
+
+# Exit codes
+EXIT_MSG_INVALID="Invalid exit code '%s'. It must be a positive integer."
+EXIT_MSG_0="Command successful."
+EXIT_MSG_1="Error executing command: General error."
+EXIT_MSG_2="Error: Wrong usage of arguments."
+EXIT_MSG_126="Error: Insufficient permissions."
+EXIT_MSG_127="Error: Command not found."
+EXIT_MSG_UNKNOWN="Error: Exit code '%d'"
