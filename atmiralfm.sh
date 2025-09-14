@@ -448,6 +448,7 @@ while true; do
         # File actions menu
         clear
         if ! action=$(run_dialog --title "$(printf "$ACTION_FILE_TITLE" "$choice")" \
+            --no-tags \
             --menu "$UI_FM_ACTION_PROMPT" 0 0 0 \
             "${actions[@]}"); then
                 continue
