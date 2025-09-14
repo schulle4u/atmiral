@@ -12,6 +12,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ATMIRAL_LANG="de"
 COMMAND_DEBUG=0
 SHOW_HIDDEN=1
+DEFAULT_EDITOR="nano"
+DEFAULT_VIEWER="less"
+DEFAULT_PLAYER="mpv"
+DEFAULT_IMG_VIEWER="feh"
 
 # Load config file
 CONFIG_FILE=""
@@ -415,24 +419,21 @@ while true; do
 
         actions=()
         if [[ $mimetype == text/* ]]; then
-            if command -v nano >/dev/null 2>&1; then
-                actions+=("Nano" "$ACTION_AS_TEXT")
+            if command -v "$DEFAULT_EDITOR" >/dev/null 2>&1; then
+                actions+=("editor" "$ACTION_AS_TEXT")
             fi
-            if command -v vim >/dev/null 2>&1; then
-                actions+=("Vim" "$ACTION_AS_TEXT")
-            fi
-            if command -v less >/dev/null 2>&1; then
-                actions+=("Less" "$ACTION_VIEW")
+            if command -v "$DEFAULT_VIEWER" >/dev/null 2>&1; then
+                actions+=("viewer" "$ACTION_VIEW")
             fi
         fi
         if [[ $mimetype == audio/* || $mimetype == video/* ]]; then
-            if command -v mpv >/dev/null 2>&1; then
-                actions+=("MPV" "$ACTION_PLAY_MEDIA")
+            if command -v "$DEFAULT_PLAYER" >/dev/null 2>&1; then
+                actions+=("player" "$ACTION_PLAY_MEDIA")
             fi
         fi
         if [[ $mimetype == image/* ]]; then
-            if command -v feh >/dev/null 2>&1; then
-                actions+=("Feh" "$ACTION_IMAGE")
+            if command -v "$DEFAULT_IMG_VIEWER" >/dev/null 2>&1; then
+                actions+=("imageviewer" "$ACTION_IMAGE")
             fi
         fi
         if [[ -x "$CWD/$choice" ]]; then
@@ -455,11 +456,10 @@ while true; do
             fi
 
         case $action in
-            "Nano") (nano "$CWD/$choice") ;;
-            "Vim") (vim "$CWD/$choice") ;;
-            "Less") (less "$CWD/$choice") ;;
-            "MPV") (mpv "$CWD/$choice") ;;
-            "Feh") (feh "$CWD/$choice") ;;
+            "editor") ("$DEFAULT_EDITOR" "$CWD/$choice") ;;
+            "viewer") ("$DEFAULT_VIEWER" "$CWD/$choice") ;;
+            "player") ("$DEFAULT_PLAYER" "$CWD/$choice") ;;
+            "imageviewer") ("$DEFAULT_IMG_VIEWER" "$CWD/$choice") ;;
             "run") ("$CWD/$choice") ;;
             "custom")
                 clear
