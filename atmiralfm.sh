@@ -436,14 +436,14 @@ while true; do
             fi
         fi
         if [[ -x "$CWD/$choice" ]]; then
-            actions+=("$ACTION_RUN" "$ACTION_RUN_DESCRIPTION")
+            actions+=("run" "$ACTION_RUN")
         fi
-        actions+=("$ACTION_CUSTOM" "$ACTION_CUSTOM_DESCRIPTION")
-        actions+=("$ACTION_COPY" "$ACTION_COPY_DESCRIPTION")
-        actions+=("$ACTION_MOVE" "$ACTION_MOVE_DESCRIPTION")
-        actions+=("$ACTION_DELETE" "$ACTION_DELETE_DESCRIPTION")
-        actions+=("$ACTION_INFO" "$ACTION_INFO_DESCRIPTION")
-        actions+=("$ACTION_CANCEL" "$ACTION_CANCEL_DESCRIPTION")
+        actions+=("custom" "$ACTION_CUSTOM")
+        actions+=("copy" "$ACTION_COPY")
+        actions+=("move" "$ACTION_MOVE")
+        actions+=("delete" "$ACTION_DELETE")
+        actions+=("info" "$ACTION_INFO")
+        actions+=("cancel" "$ACTION_CANCEL")
 
         # File actions menu
         clear
@@ -460,8 +460,8 @@ while true; do
             "Less") (less "$CWD/$choice") ;;
             "MPV") (mpv "$CWD/$choice") ;;
             "Feh") (feh "$CWD/$choice") ;;
-            "$ACTION_RUN") ("$CWD/$choice") ;;
-            "$ACTION_CUSTOM")
+            "run") ("$CWD/$choice") ;;
+            "custom")
                 clear
                 if ! custom_cmd=$(run_dialog --title "$ACTION_CUSTOM" \
                     --inputbox "$UI_FM_CUSTOM_PROMPT" 10 60); then
@@ -491,7 +491,7 @@ while true; do
                     run_dialog --msgbox "$UI_FM_CUSTOM_ERROR" 10 70
                 fi
                 ;;
-            "$ACTION_COPY")
+            "copy")
                 clear
                 if ! copy_cmd=$(run_dialog --title "$ACTION_COPY" --fselect "$HOME/" 15 70); then
                     continue
@@ -508,7 +508,7 @@ while true; do
                     run_dialog --msgbox "$exit_message" 10 70
                 fi
                 ;;
-            "$ACTION_MOVE")
+            "move")
                 clear
                 if ! move_cmd=$(run_dialog --title "$ACTION_MOVE" --fselect "$HOME/" 15 70); then
                     continue
@@ -525,7 +525,7 @@ while true; do
                     run_dialog --msgbox "$exit_message" 10 70
                 fi
                 ;;
-            "$ACTION_DELETE")
+            "delete")
                 clear
                 if ! delete_cmd=$(run_dialog --title "$ACTION_DELETE" --yesno "$(printf "$ACTION_DELETE_CONFIRM" "$CWD/$choice\n")" 15 70); then
                     continue
@@ -542,7 +542,7 @@ while true; do
                     run_dialog --msgbox "$exit_message" 10 70
                 fi
                 ;;
-            "$ACTION_INFO")
+            "info")
                 clear
                 # Using get_safe_mimetype for the detailed information
                 # local detailed_info
