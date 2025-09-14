@@ -26,6 +26,8 @@ UI_OK_BUTTON="OK"
 UI_CANCEL_BUTTON="Abbrechen"
 UI_YES_BUTTON="Ja"
 UI_NO_BUTTON="Nein"
+UI_SELECT_BUTTON="Auswählen"
+UI_EXIT_BUTTON="Beenden"
 
 # Error dialogs
 UI_ERROR_LOADING_FILE="Fehler beim Laden der Datei:\n%s"

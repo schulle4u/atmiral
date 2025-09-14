@@ -386,6 +386,8 @@ while true; do
     if ! choice=$(run_dialog --begin 3 1 \
         --backtitle "$UI_FM_TITLE - ${USER}@${HOSTNAME}:${CWD}" \
         --title "$UI_FM_LIST_TITLE" \
+        --ok-label "$UI_SELECT_BUTTON" \
+        --cancel-label "$UI_EXIT_BUTTON" \
         --menu "$UI_FM_MENU_PROMPT" 0 0 0 \
         "${entries[@]}"); then
         break  # Exit on escape or cancel

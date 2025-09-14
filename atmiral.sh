@@ -359,6 +359,8 @@ run_textmenu() {
         local choice
         choice=$(dialog --begin 3 1 \
             --title "$UI_LIST_TITLE" \
+            --ok-label "$UI_SELECT_BUTTON" \
+            --cancel-label "$UI_EXIT_BUTTON" \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
@@ -427,6 +429,8 @@ run_menu() {
         local choice
         choice=$(dialog --begin 3 1 \
             --title "$UI_FOLDER_TITLE" \
+            --ok-label "$UI_SELECT_BUTTON" \
+            --cancel-label "$UI_EXIT_BUTTON" \
             --menu "$UI_MENU_PROMPT" 0 0 0 \
             "$UI_BACK_OPTION" "$UI_BACK_DESCRIPTION" \
             "${display_entries[@]}" \
