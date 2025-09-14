@@ -420,20 +420,20 @@ while true; do
         actions=()
         if [[ $mimetype == text/* ]]; then
             if command -v "$DEFAULT_EDITOR" >/dev/null 2>&1; then
-                actions+=("editor" "$ACTION_AS_TEXT")
+                actions+=("editor" "$(printf "$ACTION_AS_TEXT" "$DEFAULT_EDITOR")")
             fi
             if command -v "$DEFAULT_VIEWER" >/dev/null 2>&1; then
-                actions+=("viewer" "$ACTION_VIEW")
+                actions+=("viewer" "$(printf "$ACTION_VIEW" "$DEFAULT_VIEWER")")
             fi
         fi
         if [[ $mimetype == audio/* || $mimetype == video/* ]]; then
             if command -v "$DEFAULT_PLAYER" >/dev/null 2>&1; then
-                actions+=("player" "$ACTION_PLAY_MEDIA")
+                actions+=("player" "$(printf "$ACTION_PLAY_MEDIA" "$DEFAULT_PLAYER")")
             fi
         fi
         if [[ $mimetype == image/* ]]; then
             if command -v "$DEFAULT_IMG_VIEWER" >/dev/null 2>&1; then
-                actions+=("imageviewer" "$ACTION_IMAGE")
+                actions+=("imageviewer" "$(printf "$ACTION_IMAGE" "$DEFAULT_IMG_VIEWER")")
             fi
         fi
         if [[ -x "$CWD/$choice" ]]; then
