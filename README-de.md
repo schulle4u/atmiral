@@ -101,11 +101,10 @@ Wer für das Menü eine dunkle Farbgebung bevorzugt, findet im Ordner eine `.dia
 
 Der ATMIRAL-Dateibrowser wird mit dem Befehl `atmiralfm` bzw. `atmiralfm.sh` im Skriptverzeichnis aufgerufen. Das Homeverzeichnis des aktuellen Benutzers ist standardmäßig als Startverzeichnis festgelegt. Ein anderes Startverzeichnis kann als Argument an `atmiralfm` übergeben werden. Die Navigation durch Dateien und Ordner ist selbsterklärend und funktioniert entweder mittels Pfeiltasten hoch und runter oder durch die Eingabe des Anfangsbuchstabens eines Eintrags sowie der Bestätigung mit Enter. Wie in vielen Dateimanagern üblich befindet sich am Anfang jeder Liste die Möglichkeit in den nächsthöheren Ordner zu wechseln. Am linken oberen Bildschirmrand ist eine dem Shell-Prompt ähnliche Statuszeile hinterlegt, welche den Benutzer und Hostnamen sowie den aktuellen Ordnerpfad anzeigt. 
 
-Nach der Auswahl einer datei öffnet sich ein Aktionsmenü, welches verschiedene Optionen zum Betrachten der Datei anbietet. Je nach Dateityp und installierten Paketen kann die Anzeige variieren. Folgende Auswahlmöglichkeiten sind möglich: 
+Nach der Auswahl einer datei oder durch Drücken der Aktionen-Schaltfläche öffnet sich ein Aktionsmenü, welches verschiedene Optionen zum Umgang mit Dateien und Ordnern anbietet. Je nach Dateityp und installierten Paketen kann die Anzeige variieren. Folgende Auswahlmöglichkeiten sind möglich: 
 
-* Textdateien: nano, vim, less
-* Audio- und Video: mpv
-* Bilder: feh
+* Verzeichnis öffnen
+* Datei öffnen (Text, Audio/Video, Bilder)
 * Benutzerdefiniert: Erlaubt die Eingabe eines benutzerdefinierten Befehls zum Betrachten der Datei.
 * Ausführen: Prüft, ob die Datei ausführbar ist und startet sie direkt. 
 * Kopieren nach: Datei an einen anderen Ort kopieren
@@ -113,6 +112,16 @@ Nach der Auswahl einer datei öffnet sich ein Aktionsmenü, welches verschiedene
 * Löschen: Datei nach Bestätigung löschen.
 * Info: Zeigt Dateiinformationen an.
 * Abbruch: Schließt das menü und kehrt in die Dateiliste zurück. 
+
+### Konfiguration des Dateibrowsers
+
+Folgende Optionen sind in der Datei `atmiral.conf` verfügbar: 
+
+* `SHOW_HIDDEN`: Versteckte Dateien und Verzeichnisse anzeigen
+* `DEFAULT_EDITOR`: Standard-Texteditor, z. B. nano oder vim
+* `DEFAULT_VIEWER`: Standard-Dateibetrachter, z. B. less, more, w3m.
+* `DEFAULT_PLAYER`: Standard-Medienwiedergabe, z. B.  mpv, vlc. 
+* `DEFAULT_IMG_VIEWER`: Standard-Bildbetrachter, z. B. feh. 
 
 ## Entwicklung
 

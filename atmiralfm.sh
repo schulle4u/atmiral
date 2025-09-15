@@ -336,10 +336,190 @@ get_mimetype_by_extension() {
 # Dialog wrapper
 run_dialog() {
     local output
-    if ! output=$(dialog "$@" 3>&1 1>&2 2>&3); then
-        return 1
-    fi
+    local exit_code
+    output=$(dialog "$@" 3>&1 1>&2 2>&3)
+    exit_code=$?
     printf '%s\n' "$output"
+    return $exit_code
+}
+
+# Actions menu
+show_actions() {
+    local current_entry=$1
+    
+    # Check if entry exists
+    if [[ ! -e "$current_entry" ]]; then
+        run_dialog --msgbox "$(printf "$UI_FILE_NOT_FOUND" "$current_entry")" 10 70
+        return
+    fi
+    
+    actions=()
+    
+    if [[ -d "$current_entry" ]]; then
+        # Directory actions
+        actions+=("open" "$ACTION_OPEN_DIR")
+        actions+=("copy" "$ACTION_COPY")
+        actions+=("move" "$ACTION_MOVE")
+        actions+=("delete" "$ACTION_DELETE")
+        actions+=("info" "$ACTION_INFO")
+    else
+        # File actions - existing logic
+        local mimetype=$(file --mime-type -b "$current_entry" 2>/dev/null || echo "application/octet-stream")
+
+        if [[ $mimetype == text/* ]]; then
+            if command -v "$DEFAULT_EDITOR" >/dev/null 2>&1; then
+                actions+=("editor" "$(printf "$ACTION_AS_TEXT" "$DEFAULT_EDITOR")")
+            fi
+            if command -v "$DEFAULT_VIEWER" >/dev/null 2>&1; then
+                actions+=("viewer" "$(printf "$ACTION_VIEW" "$DEFAULT_VIEWER")")
+            fi
+        fi
+        if [[ $mimetype == audio/* || $mimetype == video/* ]]; then
+            if command -v "$DEFAULT_PLAYER" >/dev/null 2>&1; then
+                actions+=("player" "$(printf "$ACTION_PLAY_MEDIA" "$DEFAULT_PLAYER")")
+            fi
+        fi
+        if [[ $mimetype == image/* ]]; then
+            if command -v "$DEFAULT_IMG_VIEWER" >/dev/null 2>&1; then
+                actions+=("imageviewer" "$(printf "$ACTION_IMAGE" "$DEFAULT_IMG_VIEWER")")
+            fi
+        fi
+        if [[ -x "$current_entry" ]]; then
+            actions+=("run" "$ACTION_RUN")
+        fi
+        actions+=("custom" "$ACTION_CUSTOM")
+        actions+=("copy" "$ACTION_COPY")
+        actions+=("move" "$ACTION_MOVE")
+        actions+=("delete" "$ACTION_DELETE")
+        actions+=("info" "$ACTION_INFO")
+    fi
+    
+    actions+=("cancel" "$ACTION_CANCEL")
+
+    # File/Directory actions menu
+    clear
+    local item_type
+    if [[ -d "$current_entry" ]]; then
+        item_type="$UI_FM_FOLDER"
+    else
+        item_type="$UI_FM_FILE"
+    fi
+
+    if ! action=$(run_dialog --title "$(printf "$ACTION_TITLE" "$item_type" "$(basename "$current_entry")")" \
+        --no-tags \
+        --menu "$UI_FM_ACTION_PROMPT" 0 0 0 \
+        "${actions[@]}"); then
+            return
+        fi
+
+    case $action in
+        "open")
+            if [[ -d "$current_entry" ]]; then
+                CWD="$current_entry"
+            fi
+            ;;
+        "editor") ("$DEFAULT_EDITOR" "$current_entry") ;;
+        "viewer") ("$DEFAULT_VIEWER" "$current_entry") ;;
+        "player") ("$DEFAULT_PLAYER" "$current_entry") ;;
+        "imageviewer") ("$DEFAULT_IMG_VIEWER" "$current_entry") ;;
+        "run") ("$current_entry") ;;
+        "custom")
+            clear
+            if ! custom_cmd=$(run_dialog --title "$ACTION_CUSTOM" \
+                --inputbox "$UI_FM_CUSTOM_PROMPT" 10 60); then
+                return
+            fi
+
+            if [ -n "$custom_cmd" ]; then
+                # Split into command and parameters
+                quoted_parts=()
+                for word in $custom_cmd; do
+                    quoted_parts+=("$(printf '%q' "$word")")
+                done
+
+                # Quote and attach file safely
+                quoted_parts+=("$(printf '%q' "$current_entry")")
+
+                # Re-build and run command
+                (bash -c "${quoted_parts[*]}")
+                local exit_code=$?
+                local exit_message=$(exit_code_to_message "$exit_code")
+                if [[ ! $exit_code -eq 0 ]]; then
+                    clear
+                    run_dialog --msgbox "$exit_message" 10 70
+                fi
+            else
+                clear
+                run_dialog --msgbox "$UI_FM_CUSTOM_ERROR" 10 70
+            fi
+            ;;
+        "copy")
+            clear
+            if ! copy_cmd=$(run_dialog --title "$ACTION_COPY" --fselect "$HOME/" 15 70); then
+                return
+            fi
+
+            if [[ -d "$current_entry" ]]; then
+                (cp -r "$current_entry" "$copy_cmd")
+            else
+                (cp "$current_entry" "$copy_cmd")
+            fi
+            local exit_code=$?
+            local exit_message=$(exit_code_to_message "$exit_code")
+            clear
+            run_dialog --msgbox "$exit_message" 10 70
+            ;;
+        "move")
+            clear
+            if ! move_cmd=$(run_dialog --title "$ACTION_MOVE" --fselect "$HOME/" 15 70); then
+                return
+            fi
+            
+            (mv "$current_entry" "$move_cmd")
+            local exit_code=$?
+            local exit_message=$(exit_code_to_message "$exit_code")
+            clear
+            run_dialog --msgbox "$exit_message" 10 70
+            ;;
+        "delete")
+            clear
+            local item_type
+            if [[ -d "$current_entry" ]]; then
+                item_type="$ACTION_TYPE_DIR"
+            else
+                item_type="$ACTION_TYPE_FILE"
+            fi
+            
+            if run_dialog --title "$ACTION_DELETE" --yesno "$(printf "$ACTION_DELETE_CONFIRM" "$item_type" "$(basename "$current_entry")")" 15 70; then
+                if [[ -d "$current_entry" ]]; then
+                    (rm -rf "$current_entry")
+                else
+                    (rm "$current_entry")
+                fi
+                local exit_code=$?
+                local exit_message=$(exit_code_to_message "$exit_code")
+                clear
+                run_dialog --msgbox "$exit_message" 10 70
+            fi
+            ;;
+        "info")
+            clear
+            # Using get_safe_mimetype for the detailed information
+            local detailed_info
+            detailed_info=$(get_safe_mimetype "$current_entry")
+            
+            info_message=$(printf "$INFO_MSG_PATH" "$current_entry\n")
+            info_message+="---------------------------------\n"
+            info_message+=$(printf "$INFO_MSG_TYPE" "$detailed_info\n")
+            info_message+=$(printf "$INFO_MSG_SIZE" "$(du -sh "$current_entry" 2>/dev/null | awk '{print $1}')\n")
+            info_message+=$(printf "$INFO_MSG_PERMS" "$(stat -c '%A (%U:%G)' "$current_entry" 2>/dev/null)\n")
+
+            run_dialog --title "$ACTION_INFO" --msgbox "$info_message" 0 0
+            ;;
+        *)
+            return
+            ;;
+    esac
 }
 
 while true; do
@@ -387,180 +567,52 @@ while true; do
 
     # Main menu
     clear
-    if ! choice=$(run_dialog --begin 3 1 \
+    choice=$(run_dialog --begin 3 1 \
         --backtitle "$UI_FM_TITLE - ${USER}@${HOSTNAME}:${CWD}" \
+        --extra-button --extra-label "$UI_ACTIONS_BUTTON" \
         --title "$UI_FM_LIST_TITLE" \
         --ok-label "$UI_SELECT_BUTTON" \
         --cancel-label "$UI_EXIT_BUTTON" \
         --menu "$UI_FM_MENU_PROMPT" 0 0 0 \
-        "${entries[@]}"); then
-        break  # Exit on escape or cancel
-    fi
-    
-    if [ "$choice" = ".." ]; then
-        # Back to parent
-        CWD=$(dirname "$CWD")
-        continue
-    fi
+        "${entries[@]}")
 
-    if [ -d "$CWD/$choice" ]; then
-        # Check read permissions
-        if [[ ! -r "$CWD/$choice" ]]; then
-            run_dialog --msgbox "$UI_FILE_NO_PERMISSION" 10 70
-           continue
-        fi
-
-        # Jump into subfolder
-        CWD="$CWD/$choice"
-        continue
-    else
-        # Determine file type
-        mimetype=$(file --mime-type -b "$CWD/$choice")
-
-        actions=()
-        if [[ $mimetype == text/* ]]; then
-            if command -v "$DEFAULT_EDITOR" >/dev/null 2>&1; then
-                actions+=("editor" "$(printf "$ACTION_AS_TEXT" "$DEFAULT_EDITOR")")
-            fi
-            if command -v "$DEFAULT_VIEWER" >/dev/null 2>&1; then
-                actions+=("viewer" "$(printf "$ACTION_VIEW" "$DEFAULT_VIEWER")")
-            fi
-        fi
-        if [[ $mimetype == audio/* || $mimetype == video/* ]]; then
-            if command -v "$DEFAULT_PLAYER" >/dev/null 2>&1; then
-                actions+=("player" "$(printf "$ACTION_PLAY_MEDIA" "$DEFAULT_PLAYER")")
-            fi
-        fi
-        if [[ $mimetype == image/* ]]; then
-            if command -v "$DEFAULT_IMG_VIEWER" >/dev/null 2>&1; then
-                actions+=("imageviewer" "$(printf "$ACTION_IMAGE" "$DEFAULT_IMG_VIEWER")")
-            fi
-        fi
-        if [[ -x "$CWD/$choice" ]]; then
-            actions+=("run" "$ACTION_RUN")
-        fi
-        actions+=("custom" "$ACTION_CUSTOM")
-        actions+=("copy" "$ACTION_COPY")
-        actions+=("move" "$ACTION_MOVE")
-        actions+=("delete" "$ACTION_DELETE")
-        actions+=("info" "$ACTION_INFO")
-        actions+=("cancel" "$ACTION_CANCEL")
-
-        # File actions menu
-        clear
-        if ! action=$(run_dialog --title "$(printf "$ACTION_FILE_TITLE" "$choice")" \
-            --no-tags \
-            --menu "$UI_FM_ACTION_PROMPT" 0 0 0 \
-            "${actions[@]}"); then
+    dialog_exit=$?
+    case $dialog_exit in
+        0)
+            if [ "$choice" = ".." ]; then
+                # Back to parent
+                CWD=$(dirname "$CWD")
                 continue
             fi
 
-        case $action in
-            "editor") ("$DEFAULT_EDITOR" "$CWD/$choice") ;;
-            "viewer") ("$DEFAULT_VIEWER" "$CWD/$choice") ;;
-            "player") ("$DEFAULT_PLAYER" "$CWD/$choice") ;;
-            "imageviewer") ("$DEFAULT_IMG_VIEWER" "$CWD/$choice") ;;
-            "run") ("$CWD/$choice") ;;
-            "custom")
-                clear
-                if ! custom_cmd=$(run_dialog --title "$ACTION_CUSTOM" \
-                    --inputbox "$UI_FM_CUSTOM_PROMPT" 10 60); then
-                    continue
+            if [ -d "$CWD/$choice" ]; then
+                # Check read permissions
+                if [[ ! -r "$CWD/$choice" ]]; then
+                    run_dialog --msgbox "$UI_FILE_NO_PERMISSION" 10 70
+                   continue
                 fi
 
-                if [ -n "$custom_cmd" ]; then
-                    # Split into command and parameters
-                    quoted_parts=()
-                    for word in $custom_cmd; do
-                        quoted_parts+=("$(printf '%q' "$word")")
-                    done
-
-                    # Quote and attach file safely
-                    quoted_parts+=("$(printf '%q' "$CWD/$choice")")
-
-                    # Re-build and run command
-                    (bash -c "${quoted_parts[*]}")
-                    exit_code=$?
-                    exit_message=$(exit_code_to_message "$exit_code")
-                    if [[ ! $exit_code -eq 0 ]]; then
-                        clear
-                        run_dialog --msgbox "$exit_message" 10 70
-                    fi
-                else
-                    clear
-                    run_dialog --msgbox "$UI_FM_CUSTOM_ERROR" 10 70
-                fi
-                ;;
-            "copy")
-                clear
-                if ! copy_cmd=$(run_dialog --title "$ACTION_COPY" --fselect "$HOME/" 15 70); then
-                    continue
-                fi
-
-                (cp "$CWD/$choice" "$copy_cmd")
-                exit_code=$?
-                exit_message=$(exit_code_to_message "$exit_code")
-                if [[ $exit_code -eq 0 ]]; then
-                    clear
-                    run_dialog --msgbox "$exit_message" 10 70
-                else
-                    clear
-                    run_dialog --msgbox "$exit_message" 10 70
-                fi
-                ;;
-            "move")
-                clear
-                if ! move_cmd=$(run_dialog --title "$ACTION_MOVE" --fselect "$HOME/" 15 70); then
-                    continue
-                fi
-                
-                (mv "$CWD/$choice" "$move_cmd")
-                exit_code=$?
-                exit_message=$(exit_code_to_message "$exit_code")
-                if [[ $exit_code -eq 0 ]]; then
-                    clear
-                    run_dialog --msgbox "$exit_message" 10 70
-                else
-                    clear
-                    run_dialog --msgbox "$exit_message" 10 70
-                fi
-                ;;
-            "delete")
-                clear
-                if ! delete_cmd=$(run_dialog --title "$ACTION_DELETE" --yesno "$(printf "$ACTION_DELETE_CONFIRM" "$CWD/$choice\n")" 15 70); then
-                    continue
-                fi
-
-                (rm --interactive=never "$CWD/$choice")
-                exit_code=$?
-                exit_message=$(exit_code_to_message "$exit_code")
-                if [[ $exit_code -eq 0 ]]; then
-                    clear
-                    run_dialog --msgbox "$exit_message" 10 70
-                else
-                    clear
-                    run_dialog --msgbox "$exit_message" 10 70
-                fi
-                ;;
-            "info")
-                clear
-                # Using get_safe_mimetype for the detailed information
-                # local detailed_info
-                detailed_info=$(get_safe_mimetype "$CWD/$choice")
-                
-                info_message=$(printf "$INFO_MSG_PATH" "$CWD/$choice\n")
-                info_message+="---------------------------------\n"
-                info_message+=$(printf "$INFO_MSG_TYPE" "$detailed_info\n")
-                info_message+=$(printf "$INFO_MSG_SIZE" "$(du -sh "$CWD/$choice" 2>/dev/null | awk '{print $1}')\n")
-                info_message+=$(printf "$INFO_MSG_PERMS" "$(stat -c '%A (%U:%G)' "$CWD/$choice" 2>/dev/null)\n")
-
-                if ! info=$(run_dialog --title "$ACTION_INFO" --msgbox "$info_message" 0 0); then
-                    continue
-                fi
-                ;;
-            *) : ;;
-        esac
-    fi
+                # Jump into subfolder
+                CWD="$CWD/$choice"
+                continue
+            else
+                show_actions "$CWD/$choice"
+            fi
+            ;;
+        3)
+            if [[ -n "$choice" && "$choice" != ".." ]]; then
+                show_actions "$CWD/$choice"
+            else
+                run_dialog --msgbox "$UI_FM_NO_SELECTION" 10 70
+            fi
+            ;;
+        1|255)
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
 done
 
 # Trap to handle cleanup on script exit

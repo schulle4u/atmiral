@@ -101,11 +101,10 @@ If you prefer the menu to have a dark colour scheme, you will find a sample `.di
 
 The Admiral file browser can be launched using the command `atmiralfm` or `atmiralfm.sh` in the script directory. The home directory of the current user is set as the start directory by default. A different start directory can be specified as an argument when calling `atmiralfm`. Navigating through files and folders is straightforward and can be done using the up and down arrow keys, or by entering the first letter of an entry and confirming with the Enter key. As with many file managers, there is an option at the top of each list to move to the parent folder. In the top-left corner of the screen is a status bar similar to the shell prompt which displays the user and host name, as well as the current folder path. 
 
-After selecting a file, an action menu opens offering various options for viewing the file. The display may vary depending on the file type and installed packages. The following options are available:
+After selecting a file, or by pressing the actions button, a menu opens offering various options for the selected file or directory. The display may vary depending on the file type and installed packages. The following options are available:
  
-* Text files: nano, vim, less
-* Audio and video: mpv
-* Images: feh
+* Open directory
+* Open file (text, audio/video, images)
 * Custom: Allows to enter a custom command to open the file.
 * Execute: Checks whether the file is executable and starts it directly.
 * Copy to: Copy file to another location
@@ -113,6 +112,16 @@ After selecting a file, an action menu opens offering various options for viewin
 * Delete: Removes the file after confirmation.
 * Info: Display file information.
 * Cancel: Closes the menu and returns to the file list.
+
+### File browser configuration
+
+The following options are available in `atmiral.conf`: 
+
+* `SHOW_HIDDEN`: Show hidden files and directories
+* `DEFAULT_EDITOR`: Default text editor, e.g. nano or vim
+* `DEFAULT_VIEWER`: Default file viewer, e.g. less, more, w3m.
+* `DEFAULT_PLAYER`: Default media player, e.g. mpv, vlc. 
+* `DEFAULT_IMG_VIEWER`: Default image viewer, e.g. feh. 
 
 ## Development
 
