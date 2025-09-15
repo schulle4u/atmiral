@@ -485,9 +485,9 @@ show_actions() {
             clear
             local item_type
             if [[ -d "$current_entry" ]]; then
-                item_type="$ACTION_TYPE_DIR"
+                item_type="$UI_FM_FOLDER"
             else
-                item_type="$ACTION_TYPE_FILE"
+                item_type="$UI_FM_FILE"
             fi
             
             if run_dialog --title "$ACTION_DELETE" --yesno "$(printf "$ACTION_DELETE_CONFIRM" "$item_type" "$(basename "$current_entry")")" 15 70; then
