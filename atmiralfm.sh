@@ -332,6 +332,8 @@ get_mimetype_by_extension() {
     esac
     return 0
 }
+# Save current selection
+current_selection=""
 
 # Dialog wrapper
 run_dialog() {
@@ -573,6 +575,7 @@ while true; do
         --title "$UI_FM_LIST_TITLE" \
         --ok-label "$UI_SELECT_BUTTON" \
         --cancel-label "$UI_EXIT_BUTTON" \
+        --default-item "$current_selection" \
         --menu "$UI_FM_MENU_PROMPT" 0 0 0 \
         "${entries[@]}")
 
@@ -593,14 +596,17 @@ while true; do
                 fi
 
                 # Jump into subfolder
+                current_selection="$choice"
                 CWD="$CWD/$choice"
                 continue
             else
+                current_selection="$choice"
                 show_actions "$CWD/$choice"
             fi
             ;;
         3)
             if [[ -n "$choice" && "$choice" != ".." ]]; then
+                current_selection="$choice"
                 show_actions "$CWD/$choice"
             else
                 run_dialog --msgbox "$UI_FM_NO_SELECTION" 10 70
